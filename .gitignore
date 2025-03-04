@@ -1,0 +1,30 @@
+# Python
+*.py[cod]
+*.pyo
+*.pyd
+__pycache__/
+.pytest_cache/
+*.cover
+*.tox
+*.nox
+*.coverage
+*.hypothesis/
+.venv/
+env/
+venv/
+ENV/
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# systemy operacyjne
+.DS_Store
+Thumbs.db
+
+# pliki logów
+*.log
+
+# pliki konfiguracyjne Pythona
+*.sqlite3

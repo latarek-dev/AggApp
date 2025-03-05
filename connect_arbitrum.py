@@ -109,22 +109,31 @@ def user_input_and_exchange():
                     else:  # np. ETH -> USDT
                         exchange_amount = Decimal(amount) * price_base
 
-                    option = (dex, pair, exchange_amount)
+                    # Obliczenie wartości w USD
+                    token_from_price = prices.get(TOKEN_IDS.get(token_from), {}).get("usd", 1)
+                    token_to_price = prices.get(TOKEN_IDS.get(token_to), {}).get("usd", 1)
+
+                    value_from_usd = amount * token_from_price
+                    value_to_usd = float(exchange_amount) * token_to_price
+
+                    option = (dex, pair, exchange_amount, value_from_usd, value_to_usd)
                     all_options.append(option)
 
                     # Sprawdzamy, czy to najlepsza opcja
                     if best_price is None or exchange_amount > best_price:
                         best_price = exchange_amount
-                        best_pool = f"{pair} ({dex})"
+                        best_pool = (dex, pair, exchange_amount, value_from_usd, value_to_usd)
 
     if all_options:
         print("\nDostępne opcje wymiany:")
-        for dex, pair, exchange_amount in all_options:
-            print(f"  {pair} ({dex}): {amount} {token_from} → {exchange_amount:.6f} {token_to}")
+        for dex, pair, exchange_amount, value_from_usd, value_to_usd in all_options:
+            print(f"  {pair} ({dex}): {amount} {token_from} (${value_from_usd:.2f}) → {exchange_amount:.6f} {token_to} (${value_to_usd:.2f})")
 
         # Wyświetlenie najlepszej opcji
         if best_pool:
-            print("\nNajlepsza opcja: ", best_pool)
+            dex, pair, exchange_amount, value_from_usd, value_to_usd = best_pool
+            print(f"\nNajlepsza opcja:")
+            print(f"  Wymień {amount} {token_from} (${value_from_usd:.2f}) na {exchange_amount:.6f} {token_to} (${value_to_usd:.2f}) w puli {pair} ({dex}).")
     else:
         print("Brak dostępnych opcji wymiany dla podanych tokenów.")
 

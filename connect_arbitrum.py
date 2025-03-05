@@ -57,16 +57,7 @@ def get_prices_from_coingecko(token_ids):
         print(f"Nie udało się pobrać cen z CoinGecko: {e}")
         return {}
 
-# Pobierz ceny wszystkich interesujących tokenów na raz
-coingecko_prices = get_prices_from_coingecko(list(TOKEN_IDS.values()))
-print("Ceny z CoinGecko:")
-for tid, price_data in coingecko_prices.items():
-    print(f" {tid}: {price_data.get('usd')} USD")
-print()  # pusty wiersz dla przejrzystości
-
 # Funkcja obliczająca cenę z puli Uniswap lub SushiSwap (na podstawie sqrtPriceX96)
-# Funkcja obliczająca cenę z puli Uniswap lub SushiSwap (na podstawie rezerw)
-# Funkcja obliczająca cenę z puli Uniswap lub SushiSwap (na podstawie rezerw lub sqrtPriceX96)
 def get_pool_price(pool_address, token_decimals, dex_abi):
     try:
         pool_contract = w3.eth.contract(address=pool_address, abi=dex_abi)
@@ -89,34 +80,54 @@ def get_pool_price(pool_address, token_decimals, dex_abi):
         return None, None
 
 
-# Przetwarzanie każdej pary z Uniswap
-for pair, data in UNISWAP_POOLS.items():
-    price_base, price_token = get_pool_price(data["address"], data["decimals"], uniswap_abi)
-    if price_base and price_token:
-        token_1, token_2 = pair.split('/')
-        token_1_id = TOKEN_IDS.get(token_1.upper())
-        token_2_id = TOKEN_IDS.get(token_2.upper())
+# Funkcja do interakcji z użytkownikiem
+def user_input_and_exchange():
+    token_from = input("Podaj token, który chcesz wymienić (np. USDT): ").upper()
+    token_to = input("Podaj token, na który chcesz wymienić (np. ETH): ").upper()
+    amount = float(input(f"Podaj ilość {token_from}, którą chcesz wymienić: "))
 
-        # Pobieramy ceny z wcześniej pobranych danych z CoinGecko
-        token_1_price = coingecko_prices.get(token_1_id, {}).get("usd")
-        token_2_price = coingecko_prices.get(token_2_id, {}).get("usd")
+    # Pobranie cen USD dla wszystkich tokenów
+    token_ids = [TOKEN_IDS[token] for token in [token_from, token_to] if token in TOKEN_IDS]
+    prices = get_prices_from_coingecko(token_ids)
 
-        print(f"{pair} (Uniswap):")
-        print(f"  Cena 1 {token_2} = {price_base:.6f} {token_1} | Cena 1 {token_1} = {price_token:.18f} {token_2}")
-        print(f"  CoinGecko - Cena 1 {token_2} = {token_2_price} USD | Cena 1 {token_1} = {token_1_price} USD\n")
+    best_price = None
+    best_pool = None
+    all_options = []
 
-# Przetwarzanie każdej pary z SushiSwap
-for pair, data in SUSHISWAP_POOLS.items():
-    price_base, price_token = get_pool_price(data["address"], data["decimals"], uniswap_abi)
-    if price_base and price_token:
-        token_1, token_2 = pair.split('/')
-        token_1_id = TOKEN_IDS.get(token_1.upper())
-        token_2_id = TOKEN_IDS.get(token_2.upper())
+    for dex, pools in [("Uniswap", UNISWAP_POOLS), ("SushiSwap", SUSHISWAP_POOLS)]:
+        for pair, data in pools.items():
+            tokens = pair.split('/')
+            
+            # Sprawdzamy, czy pula pasuje do naszej pary wymiany
+            if set(tokens) == {token_from, token_to}:
+                price_base, price_token = get_pool_price(data["address"], data["decimals"], uniswap_abi)
+                
+                if price_base and price_token:
+                    # Ustalamy właściwy przelicznik
+                    if token_from == tokens[0]:  # np. USDT -> ETH
+                        exchange_amount = Decimal(amount) * price_token
+                    else:  # np. ETH -> USDT
+                        exchange_amount = Decimal(amount) * price_base
 
-        # Pobieramy ceny z wcześniej pobranych danych z CoinGecko
-        token_1_price = coingecko_prices.get(token_1_id, {}).get("usd")
-        token_2_price = coingecko_prices.get(token_2_id, {}).get("usd")
+                    option = (dex, pair, exchange_amount)
+                    all_options.append(option)
 
-        print(f"{pair} (SushiSwap):")
-        print(f"  Cena 1 {token_2} = {price_base:.6f} {token_1} | Cena 1 {token_1} = {price_token:.18f} {token_2}")
-        print(f"  CoinGecko - Cena 1 {token_2} = {token_2_price} USD | Cena 1 {token_1} = {token_1_price} USD\n")
+                    # Sprawdzamy, czy to najlepsza opcja
+                    if best_price is None or exchange_amount > best_price:
+                        best_price = exchange_amount
+                        best_pool = f"{pair} ({dex})"
+
+    if all_options:
+        print("\nDostępne opcje wymiany:")
+        for dex, pair, exchange_amount in all_options:
+            print(f"  {pair} ({dex}): {amount} {token_from} → {exchange_amount:.6f} {token_to}")
+
+        # Wyświetlenie najlepszej opcji
+        if best_pool:
+            print("\nNajlepsza opcja: ", best_pool)
+    else:
+        print("Brak dostępnych opcji wymiany dla podanych tokenów.")
+
+
+# Uruchomienie funkcji
+user_input_and_exchange()

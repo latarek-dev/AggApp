@@ -1,13 +1,23 @@
 from decimal import Decimal
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest
-from config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS, uniswap_abi, camelot_abi
-from utils import get_prices_from_coingecko, get_uniswap_price, get_camelot_price, get_cached_price, set_cached_price
+from config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS, get_redis
+from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
 
 exchange_router = APIRouter()
 
+# Dependency injection: Używamy CoinGeckoService oraz serwisów DEX
+def get_services(coin_gecko_service: CoinGeckoService = Depends(), 
+                 uniswap_service: UniswapService = Depends(),
+                 sushiswap_service: SushiswapService = Depends(),
+                 camelot_service: CamelotService = Depends()):
+    return coin_gecko_service, uniswap_service, sushiswap_service, camelot_service
+
 @exchange_router.post("/exchange")
-async def exchange(request: ExchangeRequest):
+async def exchange(request: ExchangeRequest,
+                   redis_client: RedisCacheService = Depends(get_redis),
+                   services: tuple = Depends(get_services)):
+    coin_gecko_service, uniswap_service, sushiswap_service, camelot_service = services
     print(f"Otrzymano żądanie z danymi: {request}")
     token_from = request.token_from.upper()
     token_to = request.token_to.upper()
@@ -16,15 +26,16 @@ async def exchange(request: ExchangeRequest):
 
     token_ids = [TOKEN_IDS[token] for token in [token_from, token_to] if token in TOKEN_IDS]
     print(f"Token IDs do pobrania z CoinGecko: {token_ids}")
-    prices = get_prices_from_coingecko(token_ids)
+    print(type(coin_gecko_service))
+    prices = {token_id: coin_gecko_service.get_price(token_id) for token_id in token_ids}
     print(f"Pobrane ceny z CoinGecko: {prices}")
 
     all_options = []
 
     for dex, pools, dex_abi, price_func in [
-        ("Uniswap", UNISWAP_POOLS, uniswap_abi, get_uniswap_price),
-        ("SushiSwap", SUSHISWAP_POOLS, uniswap_abi, get_uniswap_price),
-        ("Camelot", CAMELOT_POOLS, camelot_abi, get_camelot_price)
+        ("Uniswap", UNISWAP_POOLS, uniswap_service, 'get_pair_price'),
+        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service, 'get_pair_price'),
+        ("Camelot", CAMELOT_POOLS, camelot_service, 'get_pair_price')
     ]:
         print(f"Przetwarzanie pooli z DEX: {dex}")
         for pair, data in pools.items():
@@ -35,14 +46,14 @@ async def exchange(request: ExchangeRequest):
                 pool_name = f"{dex.lower()}_{pair}"
 
                 # Sprawdzamy, czy cena jest w cache
-                cached_price = await get_cached_price(pool_name)
+                cached_price = await redis_client.get_cached_price(pool_name)
                 if cached_price is None:
                     print(f"Cena nie znaleziono w cache dla {pool_name}, pobieramy...")
                     # Jeśli nie ma w cache, pobieramy cenę i cache'ujemy
-                    price_base, price_token = price_func(data["address"], data["decimals"], dex_abi)
+                    price_base, price_token = await getattr(dex_service, price_method)(data["address"], data["decimals"])                    
                     print(f"Obliczone ceny: {price_base}, {price_token}")
                     if price_base and price_token:
-                        await set_cached_price(pool_name, price_base)
+                        await redis_client.set_cached_price(pool_name, price_base)
                         cached_price = price_base
                     else:
                         price_base = Decimal(0)  # Default value to avoid uninitialized reference

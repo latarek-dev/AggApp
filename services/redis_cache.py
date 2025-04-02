@@ -8,8 +8,8 @@ class RedisCacheService(ICacheService):
 
     async def get_cached_price(self, key: str) -> Optional[float]:
         """Pobiera wartość z Redis."""
-        print(f"Połączenie z Redis: {redis}")  # Debugowanie
         redis = await get_redis()
+        print(f"Połączenie z Redis: {redis}")  # Debugowanie
         price = await redis.get(key)
         if price:
             print(f"Znaleziono cenę w Redis: {price}")

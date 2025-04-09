@@ -1,12 +1,12 @@
 from decimal import Decimal
 from typing import Tuple, List, Dict, Any, Optional
 from interfaces import IPairPriceService
-from config import uniswap_abi, w3
+from config import sushiswap_abi, w3
 
 class SushiswapService(IPairPriceService):
     """Serwis pobierający ceny z Sushiswap V3."""
 
-    def get_pair_price(self, pool_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]] = uniswap_abi) -> Tuple[Optional[Decimal], Optional[Decimal]]:
+    def get_pair_price(self, pool_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]] = sushiswap_abi) -> Tuple[Optional[Decimal], Optional[Decimal]]:
         """Pobiera cenę pary z Sushiswap V3."""
         try:
             pool_contract = w3.eth.contract(address=pool_address, abi=dex_abi)

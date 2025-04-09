@@ -1,8 +1,9 @@
 from decimal import Decimal
 from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest
-from config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS
+from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
+from exchange_utils import process_dex_pools, process_prices
 
 exchange_router = APIRouter()
 
@@ -26,53 +27,20 @@ async def exchange(request: ExchangeRequest,
 
     token_ids = [TOKEN_IDS[token] for token in [token_from, token_to] if token in TOKEN_IDS]
     print(f"Token IDs do pobrania z CoinGecko: {token_ids}")
-    print(type(coin_gecko_service))
-    prices = {token_id: coin_gecko_service.get_price(token_id) for token_id in token_ids}
-    print(f"Pobrane ceny z CoinGecko: {prices}")
+
+    prices = await process_prices(coin_gecko_service, token_ids, redis_cache_service)
 
     all_options = []
 
-    for dex, pools, dex_service, price_method in [
+    dexes = [
         ("Uniswap", UNISWAP_POOLS, uniswap_service, 'get_pair_price'),
         ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service, 'get_pair_price'),
         ("Camelot", CAMELOT_POOLS, camelot_service, 'get_pair_price')
-    ]:
-        print(f"Przetwarzanie pooli z DEX: {dex}")
-        for pair, data in pools.items():
-            print(f"Sprawdzanie pary: {pair}")
-            tokens = pair.split('/')
-            if set(tokens) == {token_from, token_to}:
-                print(f"Znaleziono odpowiednią parę: {pair}")
-                pool_name = f"{dex.lower()}_{pair}"
+    ]
 
-                # Sprawdzamy, czy cena jest w cache
-                cached_price = await redis_cache_service.get_cached_price(pool_name)
-                if cached_price is None:
-                    print(f"Cena nie znaleziono w cache dla {pool_name}, pobieramy...")
-                    # Jeśli nie ma w cache, pobieramy cenę i cache'ujemy
-                    price_base, price_token = getattr(dex_service, price_method)(data["address"], data["decimals"])                    
-                    print(f"Obliczone ceny: {price_base}, {price_token}")
-                    if price_base and price_token:
-                        await redis_cache_service.set_cached_price(pool_name, price_base)
-                        cached_price = price_base
-                    else:
-                        price_base = Decimal(0)  # Default value to avoid uninitialized reference
-                        price_token = Decimal(0)  # Default value to avoid uninitialized reference
-                else:
-                    price_base = cached_price
-                    price_token = Decimal(1) / Decimal(price_base) if price_base > 0 else Decimal(0)
-                    print(f"Znaleziona cena w cache: {cached_price}")
-
-                # Obliczanie kwoty wymiany
-                exchange_amount = Decimal(amount) * Decimal(price_token) if token_from == tokens[0] else Decimal(amount) * Decimal(price_base)
-                print(f"Obliczona kwota wymiany: {exchange_amount}")
-                token_from_price = prices.get(TOKEN_IDS.get(token_from), 1)  # Pobierz cenę tokenu
-                token_to_price = prices.get(TOKEN_IDS.get(token_to), 1)  # Pobierz cenę tokenu docelowego
-
-                value_from_usd = amount * float(token_from_price)
-                value_to_usd = float(exchange_amount) * float(token_to_price)
-
-                all_options.append((dex, pair, exchange_amount, value_from_usd, value_to_usd))
+    for dex_name, pools, dex_service, price_method in dexes:
+        dex_options = await process_dex_pools(dex_name, pools, dex_service, price_method, token_from, token_to, amount, redis_cache_service, prices)
+        all_options.append(dex_options)
 
     all_options.sort(key=lambda x: x[2], reverse=True)
     print(f"Opcje wymiany po sortowaniu: {all_options}")

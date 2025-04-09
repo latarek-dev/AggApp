@@ -40,7 +40,7 @@ async def exchange(request: ExchangeRequest,
 
     for dex_name, pools, dex_service, price_method in dexes:
         dex_options = await process_dex_pools(dex_name, pools, dex_service, price_method, token_from, token_to, amount, redis_cache_service, prices)
-        all_options.append(dex_options)
+        all_options.extend(dex_options)
 
     all_options.sort(key=lambda x: x[2], reverse=True)
     print(f"Opcje wymiany po sortowaniu: {all_options}")

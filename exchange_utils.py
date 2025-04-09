@@ -33,7 +33,7 @@ async def process_dex_pools(dex_name, pools, dex_service, price_method, token_fr
 
             results.append((dex_name, pair, exchange_amount, value_from_usd, value_to_usd))
 
-    return (dex_name, pair, exchange_amount, value_from_usd, value_to_usd)
+    return results
 
 async def process_prices(coin_gecko_service, token_ids, redis_cache_service):
     prices = {}

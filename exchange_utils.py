@@ -1,7 +1,22 @@
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, List
+from models import TransactionOption
 
-async def process_dex_pools(dex_name, pools, dex_service, price_method, token_from, token_to, amount, redis_cache_service, prices):
+def calculate_exchange_amount(token_from: str, tokens: list, amount: float, price_base: Decimal, price_tokens: Decimal):
+    if token_from == tokens[0]:
+        return Decimal(amount) * Decimal(price_token)
+    else:
+        return Decimal(amount) * Decimal(price_base)
+
+async def process_dex_pools(dex_name: str,
+                            pools: dict, 
+                            dex_service, 
+                            price_method: str, 
+                            token_from: str, 
+                            token_to: str, 
+                            amount: float, 
+                            redis_cache_service, 
+                            prices: dict) -> List[TransactionOption]:
 
     results = []
 
@@ -24,14 +39,28 @@ async def process_dex_pools(dex_name, pools, dex_service, price_method, token_fr
                 price_base = cached_price
                 price_token = Decimal(1) / Decimal(price_base) if price_base > 0 else Decimal(0)
 
-            exchange_amount = Decimal(amount) * Decimal(price_token) if token_from == tokens[0] else Decimal(amount) * Decimal(price_base)
+            exchange_amount = calculate_exchange_amount(token_from, tokens, amount, price_base, price_token)
+
             token_from_price = prices.get(token_from, 1)
             token_to_price = prices.get(token_to, 1)
 
             value_from_usd = amount * float(token_from_price)
             value_to_usd = float(exchange_amount) * float(token_to_price)
 
-            results.append((dex_name, pair, exchange_amount, value_from_usd, value_to_usd))
+            option = TransactionOption(
+                dex=dex_name,
+                pool=pair,
+                price=float(price_base if token_from == tokens[1] else price_token),
+                slippage=0.0,
+                liquidity=0.0,
+                tx_cost=0.0,
+                amount_from=amount,
+                amount_to=float(exchange_amount), 
+                value_from_usd=value_from_usd, 
+                value_to_usd=value_to_usd
+            )
+
+            results.append(option)
 
     return results
 
@@ -53,7 +82,7 @@ async def process_prices(coin_gecko_service, token_ids, redis_cache_service):
         for token_id, price in new_prices.items():
             if price is not None:
                 await redis_cache_service.set_cached_price(f"coingecko_{token_id}", price)
-                prices[token_id] = price
+                prices[token_id] = float(price)
 
     print(f"Pobrane ceny z cache + CoinGecko: {prices}")
     return prices

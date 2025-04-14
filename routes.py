@@ -1,9 +1,10 @@
 from decimal import Decimal
 from fastapi import APIRouter, HTTPException, Depends
-from models import ExchangeRequest
+from models import ExchangeRequest, TransactionOption, TransactionOptionRaw, FrontendTransactionOption
 from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
 from exchange_utils import process_dex_pools, process_prices
+from decision_engine import rank_options
 
 exchange_router = APIRouter()
 
@@ -42,32 +43,44 @@ async def exchange(request: ExchangeRequest,
         dex_options = await process_dex_pools(dex_name, pools, dex_service, price_method, token_from, token_to, amount, redis_cache_service, prices)
         all_options.extend(dex_options)
 
-    all_options.sort(key=lambda x: x[2], reverse=True)
-    print(f"Opcje wymiany po sortowaniu: {all_options}")
+    raw_options = [TransactionOptionRaw(
+        dex=o.dex,
+        pool=o.pool,
+        amount_to=o.amount_to,
+        slippage=o.slippage,
+        liquidity=o.liquidity,
+        tx_cost=o.tx_cost
+    ) for o in all_options]
 
-    if all_options:
-        best_pool = all_options[0]
-        print(f"Najlepsza opcja: {best_pool}")
+    # stwórz mapę do pełnych danych
+    full_option_map = {
+        (o.dex, o.pool): o
+        for o in all_options
+    }
+
+    sorted_raw = rank_options(raw_options)
+
+    print(f"Opcje wymiany po sortowaniu: {sorted_raw}")
+
+    # mapujemy na FrontendTransactionOption
+    frontend_sorted = []
+    for raw in sorted_raw:
+        full = full_option_map.get((raw.dex, raw.pool))
+        if full:
+            frontend_sorted.append(FrontendTransactionOption(
+                dex=full.dex,
+                pair=full.pool,
+                amount_from=full.amount_from,
+                amount_to=full.amount_to,
+                value_from_usd=full.value_from_usd,
+                value_to_usd=full.value_to_usd
+            ))
+
+    if frontend_sorted:
         return {
-            "best_option": {
-                "dex": best_pool[0],
-                "pair": best_pool[1],
-                "amount_from": amount,
-                "amount_to": float(best_pool[2]),
-                "value_from_usd": best_pool[3],
-                "value_to_usd": best_pool[4]
-            },
-            "options": [
-                {
-                    "dex": dex,
-                    "pair": pair,
-                    "amount_from": amount,
-                    "amount_to": float(exchange_amount),
-                    "value_from_usd": value_from_usd,
-                    "value_to_usd": value_to_usd
-                } for dex, pair, exchange_amount, value_from_usd, value_to_usd in all_options[1:]
-            ]
+            "best_option": frontend_sorted[0],
+            "options": frontend_sorted[1:]
         }
     else:
-        print("Brak dostępnych opcji wymiany.")
         raise HTTPException(status_code=404, detail="No exchange options available.")
+

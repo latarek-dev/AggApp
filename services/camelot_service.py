@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from config import camelot_abi, w3
 from interfaces import IPairPriceService
 from price_calculation import camelot_calculation
@@ -7,7 +7,7 @@ from price_calculation import camelot_calculation
 class CamelotService(IPairPriceService):
     """Serwis pobierający ceny z puli Camelot."""
 
-    def get_pair_price(self, pool_address: str, token_decimals: tuple, dex_abi: List[Dict[str, Any]] = camelot_abi) -> tuple[Decimal, Decimal]:
+    def get_pair_price(self, pool_address: str, token_decimals: tuple, dex_abi: List[Dict[str, Any]] = camelot_abi) -> Tuple[Optional[Decimal], Optional[Decimal]]:
         try:
             pool_contract = w3.eth.contract(address=pool_address, abi=dex_abi)
             global_state = pool_contract.functions.globalState().call()

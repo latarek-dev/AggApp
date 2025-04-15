@@ -41,6 +41,12 @@ async def process_dex_pools(dex_name: str,
 
             exchange_amount = calculate_exchange_amount(token_from, tokens, amount, price_base, price_token)
 
+            # Płynność
+            liquidity = dex_service.get_liquidity(data["address"])
+
+            # Koszt transakcji
+            tx_cost = dex_service.get_transaction_cost(data["address"])
+
             token_from_price = prices.get(token_from, 1)
             token_to_price = prices.get(token_to, 1)
 

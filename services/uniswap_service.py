@@ -21,3 +21,28 @@ class UniswapService(IPairPriceService):
             print(f"Błąd Uniswap {pool_address}: {e}")
             return None, None
 
+    def get_liquidity(self, pool_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]] = uniswap_abi) -> Optional[Decimal]:
+        """Pobiera płynność z puli Uniswap V3."""
+        try:
+            pool_contract = w3.eth.contract(address=pool_address, abi=dex_abi)
+            liquidity = pool_contract.functions.liquidity().call()
+
+            # Zakładamy, że używamy średniej precyzji z obu tokenów do skalowania (można inaczej)
+            avg_decimals = sum(token_decimals) / 2
+            return Decimal(liquidity) / (10 ** int(avg_decimals))
+
+        except Exception as e:
+            print(f"Błąd Uniswap przy pobieraniu płynności {pool_address}: {e}")
+            return None
+
+    def get_transaction_cost(self, pool_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]] = uniswap_abi) -> Optional[Decimal]:
+        """Szacuje koszt transakcji na Uniswapie V3 (np. opłata 0.3% lub 0.05% w zależności od puli)."""
+        try:
+            # Przykładowa stała opłata transakcyjna (np. 0.3% = 0.003)
+            # W przyszłości możesz pobierać fee z kontraktu (np. z pola `fee`)
+            tx_cost = Decimal('0.003')
+            return tx_cost
+
+        except Exception as e:
+            print(f"Błąd Uniswap przy obliczaniu kosztu transakcji {pool_address}: {e}")
+            return None

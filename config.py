@@ -25,6 +25,9 @@ with open('sushiswap_abi.json') as f:
 with open('camelot_abi.json') as f:
     camelot_abi = json.load(f)
 
+with open('erc20_abi.json') as f:
+    erc20_abi = json.load(f)
+
 # Konfiguracja Redis
 REDIS_URL = "redis://localhost:6379"
 

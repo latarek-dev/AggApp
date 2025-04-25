@@ -1,7 +1,7 @@
 from decimal import Decimal
 from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest, TransactionOption, TransactionOptionRaw, FrontendTransactionOption
-from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKEN_IDS
+from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
 from exchange_utils import process_dex_pools, process_prices
 from decision_engine import rank_options
@@ -26,21 +26,16 @@ async def exchange(request: ExchangeRequest,
     amount = request.amount
     print(f"Token_from: {token_from}, Token_to: {token_to}, Amount: {amount}")
 
-    token_ids = [TOKEN_IDS[token] for token in [token_from, token_to] if token in TOKEN_IDS]
-    print(f"Token IDs do pobrania z CoinGecko: {token_ids}")
-
-    prices = await process_prices(coin_gecko_service, token_ids, redis_cache_service)
-
     all_options = []
 
     dexes = [
-        ("Uniswap", UNISWAP_POOLS, uniswap_service, 'get_pair_price'),
-        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service, 'get_pair_price'),
-        ("Camelot", CAMELOT_POOLS, camelot_service, 'get_pair_price')
+        ("Uniswap", UNISWAP_POOLS, uniswap_service),
+        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
+        ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
-    for dex_name, pools, dex_service, price_method in dexes:
-        dex_options = await process_dex_pools(dex_name, pools, dex_service, price_method, token_from, token_to, amount, redis_cache_service, prices)
+    for dex_name, pools, dex_service in dexes:
+        dex_options = await process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
         all_options.extend(dex_options)
 
     raw_options = [TransactionOptionRaw(
@@ -76,10 +71,10 @@ async def exchange(request: ExchangeRequest,
                 value_to_usd=full.value_to_usd
             ))
 
+    print(frontend_sorted)
     if frontend_sorted:
         return {
-            "best_option": frontend_sorted[0],
-            "options": frontend_sorted[1:]
+            "options": frontend_sorted
         }
     else:
         raise HTTPException(status_code=404, detail="No exchange options available.")

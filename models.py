@@ -19,7 +19,8 @@ class TransactionOptionRaw(BaseModel):
     amount_to: float
     slippage: float
     liquidity: float
-    tx_cost: float
+    dex_fee: float
+    gas_cost: float
 
 class TransactionOption(BaseModel):
     dex: str
@@ -27,7 +28,8 @@ class TransactionOption(BaseModel):
     price: float
     slippage: float
     liquidity: float
-    tx_cost: float
+    dex_fee: float
+    gas_cost: float
     amount_from: float
     amount_to: float
     value_from_usd: float

@@ -15,7 +15,7 @@ def calculate_exchange_amount(token_from: str, tokens: list, amount: Decimal,
     else:
         return Decimal(amount) * price_base
 
-async def process_prices(coin_gecko_service, token_addresses, redis_cache_service):
+async def fetch_token_prices(coin_gecko_service, token_addresses: List[str], redis_cache_service) -> dict:
     prices = {}
     missing_tokens_addresses = []
 
@@ -39,6 +39,25 @@ async def process_prices(coin_gecko_service, token_addresses, redis_cache_servic
 
     print(f"Pobrane ceny z cache + CoinGecko: {prices}")
     return prices
+
+async def process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address):
+    # ceny dla wszystkich tokenów z puli (czyli 2 + ewentualnie ETH)
+    tokens_to_fetch = set(token_addresses)
+    if eth_address:
+        tokens_to_fetch.add(eth_address)
+
+    all_prices = await fetch_token_prices(coin_gecko_service, list(tokens_to_fetch), redis_cache_service)
+
+    filtered_prices = {
+        address: all_prices[address]
+        for address in token_addresses
+        if address in all_prices
+    }
+
+    eth_price = all_prices.get(eth_address) if eth_address else None
+    eth_price = Decimal(eth_price)
+
+    return filtered_prices, eth_price
 
 async def get_or_cache_price(redis_cache_service, pool_address, pool_name: str, dex_service, token_decimals, data: dict):
     # Sprawdzamy, czy cena jest w cache
@@ -67,6 +86,8 @@ async def process_dex_pools(dex_name: str,
 
     results = []
 
+    eth_address = token_manager.get_address_by_symbol("ETH")
+
     for pair, data in pools.items():
 
         tokens = pair.split('/')
@@ -79,7 +100,9 @@ async def process_dex_pools(dex_name: str,
 
         token_decimals = token_manager.get_decimals_for_pool(token_addresses)
 
-        prices = await process_prices(coin_gecko_service, token_addresses, redis_cache_service)
+        prices, eth_price = await process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address)
+        print("Prices:",prices)
+        print("Cena ethereum:", eth_price)
         pool_name = f"{dex_name.lower()}_{pair}"
 
         price_base, price_token = await get_or_cache_price(redis_cache_service, pool_address, pool_name, dex_service, token_decimals, data)
@@ -95,9 +118,8 @@ async def process_dex_pools(dex_name: str,
         liquidity = dex_service.get_liquidity(pool_address, token_addresses, token_decimals, prices)
         print("Tyle wynosi liquidity", liquidity)
 
-        # Koszt transakcji
-        tx_cost = dex_service.get_transaction_cost(pool_address, token_decimals)
-        print("Tyle wynosi tx cost", tx_cost)
+        dex_fee, gas_cost = dex_service.get_transaction_cost(pool_address, liquidity, eth_price)
+        print("Tyle wynosi tx cost", dex_fee, "i", gas_cost)
 
         token_from_address = token_manager.get_address_by_symbol(token_from)
         token_to_address = token_manager.get_address_by_symbol(token_to)
@@ -117,7 +139,8 @@ async def process_dex_pools(dex_name: str,
             price=float(price_base if token_from == tokens[1] else price_token),
             slippage=0.0,
             liquidity=liquidity,
-            tx_cost=tx_cost,
+            dex_fee=dex_fee,
+            gas_cost=gas_cost,
             amount_from=amount,
             amount_to=float(exchange_amount), 
             value_from_usd=value_from_usd, 

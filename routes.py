@@ -30,8 +30,8 @@ async def exchange(request: ExchangeRequest,
 
     dexes = [
         ("Uniswap", UNISWAP_POOLS, uniswap_service),
-        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
-        ("Camelot", CAMELOT_POOLS, camelot_service)
+#        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
+#        ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
     for dex_name, pools, dex_service in dexes:
@@ -44,7 +44,8 @@ async def exchange(request: ExchangeRequest,
         amount_to=o.amount_to,
         slippage=o.slippage,
         liquidity=o.liquidity,
-        tx_cost=o.tx_cost
+        dex_fee=o.dex_fee,
+        gas_cost=o.gas_cost
     ) for o in all_options]
 
     # stwórz mapę do pełnych danych

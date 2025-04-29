@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Optional
 
-def uniswap_liquidity(
+def calculate_liquidity(
     balance0: int,
     balance1: int,
     decimals0: int,

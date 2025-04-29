@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from config import camelot_abi, erc20_abi, w3
 from interfaces import IPairPriceService
 from price_calculation import camelot_calculation
-from liquidity_calculation import uniswap_liquidity
+from liquidity_calculation import calculate_liquidity
 from web3 import Web3
 
 class CamelotService(IPairPriceService):
@@ -45,7 +45,7 @@ class CamelotService(IPairPriceService):
             price0 = Decimal(prices[token0_address])
             price1 = Decimal(prices[token1_address])
 
-            total_liquidity = uniswap_liquidity(balance0, balance1, decimals0, decimals1, price0, price1)
+            total_liquidity = calculate_liquidity(balance0, balance1, decimals0, decimals1, price0, price1)
 
             # Można też zwrócić tuple, ale tu np. suma jako przybliżona płynność
             return total_liquidity

@@ -30,13 +30,15 @@ async def exchange(request: ExchangeRequest,
 
     dexes = [
         ("Uniswap", UNISWAP_POOLS, uniswap_service),
-#        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
-#        ("Camelot", CAMELOT_POOLS, camelot_service)
+        ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
+        ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
     for dex_name, pools, dex_service in dexes:
         dex_options = await process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
         all_options.extend(dex_options)
+
+    print(all_options)
 
     raw_options = [TransactionOptionRaw(
         dex=o.dex,

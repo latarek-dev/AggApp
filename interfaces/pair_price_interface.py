@@ -15,5 +15,5 @@ class IPairPriceService(ABC):
         pass
 
     @abstractmethod
-    def get_transaction_cost(self, pool_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]]) -> Optional[Decimal]:
+    def get_transaction_cost(self, pool_address: str, token_from_address: str, token_decimals: Tuple[int, int], dex_abi: List[Dict[str, Any]]) -> Optional[Decimal]:
         pass

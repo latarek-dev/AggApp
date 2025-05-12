@@ -96,13 +96,10 @@ async def process_dex_pools(dex_name: str,
 
         pool_address = data.get("address")
         token_addresses = token_manager.get_pool_addresses(dex_service, pool_address)
-        print("Adresy: ", token_addresses)
 
         token_decimals = token_manager.get_decimals_for_pool(token_addresses)
 
         prices, eth_price = await process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address)
-        print("Prices:",prices)
-        print("Cena ethereum:", eth_price)
         pool_name = f"{dex_name.lower()}_{pair}"
 
         price_base, price_token = await get_or_cache_price(redis_cache_service, pool_address, pool_name, dex_service, token_decimals, data)
@@ -111,24 +108,51 @@ async def process_dex_pools(dex_name: str,
         print("amount:", amount)
         print("price_base:", price_base)
         print("price_token:", price_token)
-        exchange_amount = calculate_exchange_amount(token_from, tokens, amount, price_base, price_token)
-        print("exchange_amount:", exchange_amount)
+        amount_out_expected = calculate_exchange_amount(token_from, tokens, amount, price_base, price_token)
+        print("exchange_amount:", amount_out_expected)
 
         # Płynność
         liquidity = dex_service.get_liquidity(pool_address, token_addresses, token_decimals, prices)
-        print("Tyle wynosi liquidity", liquidity)
 
-        dex_fee, gas_cost = dex_service.get_transaction_cost(pool_address, liquidity, eth_price)
-        print("Tyle wynosi tx cost", dex_fee, "i", gas_cost)
+        if liquidity is None:
+            print(f"Pominięto pulę {pool_address} z powodu braku płynności.")
+            continue
+
+        balance0, balance1 = liquidity
+
+        # Przelicz salda na wartość płynności w USD
+        token0_address, token1_address = token_addresses
+        token0_price = Decimal(str(prices.get(token0_address, 0)))
+        token1_price = Decimal(str(prices.get(token1_address, 0)))
+
+        if token0_price == 0 or token1_price == 0:
+            print(f"Brak cen dla tokenów w puli {pool_address}, pomijam.")
+            continue
+
+        liquidity_usd = (balance0 * token0_price) + (balance1 * token1_price)
 
         token_from_address = token_manager.get_address_by_symbol(token_from)
         token_to_address = token_manager.get_address_by_symbol(token_to)
 
-        print("prices:", prices)
+        dex_fee, gas_cost = dex_service.get_transaction_cost(pool_address, token_from_address, liquidity_usd, eth_price)
+
         token_from_price = prices.get(token_from_address, 1)
         token_to_price = prices.get(token_to_address, 1)
-        print("token_from_price:", token_from_price)
-        print("token_to_price:", token_to_price)
+
+        print(token_from_address.lower())
+        print(token_addresses[0].lower())
+        
+        # Oblicz slippage
+        is_token0_from = token_from_address.lower() == token_addresses[0].lower()
+        print("Czy token 0 jest from", is_token0_from)
+        slippage = dex_service.get_slippage(amount, amount_out_expected, liquidity, is_token0_from)
+
+        exchange_amount = amount_out_expected * (1 - dex_fee)
+        if slippage is not None:
+            exchange_amount = exchange_amount * (1 - slippage)
+        else:
+            print("Pominięto pulę z powodu braku slippage.")
+            continue
 
         value_from_usd = amount * float(token_from_price)
         value_to_usd = float(exchange_amount) * float(token_to_price)
@@ -137,8 +161,8 @@ async def process_dex_pools(dex_name: str,
             dex=dex_name,
             pool=pair,
             price=float(price_base if token_from == tokens[1] else price_token),
-            slippage=0.0,
-            liquidity=liquidity,
+            slippage=slippage,
+            liquidity=liquidity_usd,
             dex_fee=dex_fee,
             gas_cost=gas_cost,
             amount_from=amount,

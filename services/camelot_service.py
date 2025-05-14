@@ -12,16 +12,19 @@ token_manager = TokenManager(TOKENS)
 QUOTER_ADDRESS = Web3.to_checksum_address("0x0Fc73040b26E9bC8514fA028D998E73A254Fa76E")
 quoter_abi = [
     {
-      "inputs":[
-        {"internalType":"address","name":"tokenIn","type":"address"},
-        {"internalType":"address","name":"tokenOut","type":"address"},
-        {"internalType":"uint24","name":"fee","type":"uint24"},
-        {"internalType":"uint256","name":"amountIn","type":"uint256"},
-        {"internalType":"uint160","name":"sqrtPriceLimitX96","type":"uint160"}
-      ],
-      "name":"quoteExactInputSingle",
-      "outputs":[{"internalType":"uint256","name":"amountOut","type":"uint256"}],
-      "stateMutability":"view","type":"function"
+        "inputs": [
+            {"internalType": "address", "name": "tokenIn", "type": "address"},
+            {"internalType": "address", "name": "tokenOut", "type": "address"},
+            {"internalType": "uint256", "name": "amountIn", "type": "uint256"},
+            {"internalType": "uint160", "name": "limitSqrtPrice", "type": "uint160"}
+        ],
+        "name": "quoteExactInputSingle",
+        "outputs": [
+            {"internalType": "uint256", "name": "amountOut", "type": "uint256"},
+            {"internalType": "uint16", "name": "fee", "type": "uint16"}
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ]
 
@@ -158,79 +161,82 @@ class CamelotService(IPairPriceService):
         token_to: str,
         token_decimals: Tuple[int, int],
     ) -> Optional[Dict[str, Decimal]]:
+        """
+        Szacuje slippage dla puli Camelot V3 za pomocą ich Quoter:
+        - amount_out: ile token_to otrzymasz,
+        - slippage: (ideal_out - actual_out) / ideal_out,
+        - price_before: aktualna cena token_to/token_from.
+        """
         try:
-            pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
-            quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)
+            # kontrakty
+            pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
+            quoter = w3.eth.contract(address=QUOTER_ADDRESS,     abi=quoter_abi)
 
-            # Pobierz adresy tokenów
-            token_in_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
+            # checksum adresy tokenów
+            token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
             token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
-            print(f"Token in: {token_in_addr}, Token out: {token_out_addr}")
 
-                        # Pobierz token0 i token1 z kontraktu
+            # sprawdź, czy tokeny się zgadzają z pulą
             token0 = pool.functions.token0().call()
             token1 = pool.functions.token1().call()
+            t0 = token0.lower()
+            t1 = token1.lower()
 
-            # Pobierz globalState
-            global_state = pool.functions.globalState().call()
-            print("global_state", global_state)
-            _, _, feeZto, feeOtz, *_ = global_state
-
-            # Wybierz odpowiednią opłatę
-            if token_from_address.lower() == token0.lower():
-                fee_tier = feeZto
-            elif token_from_address.lower() == token1.lower():
-                fee_tier = feeOtz
-            else:
-                print(f"Token {token_from_address} nie pasuje do token0 ani token1.")
+            # 4) Rezerwy (ERC-20 balanceOf)
+            erc0 = w3.eth.contract(token0, abi=erc20_abi)
+            erc1 = w3.eth.contract(token1, abi=erc20_abi)
+            bal0_wei = erc0.functions.balanceOf(pool_address).call()
+            bal1_wei = erc1.functions.balanceOf(pool_address).call()
+            if {token_in_addr.lower(), token_out_addr.lower()} != {t0, t1}:
+                print("Tokeny nie pasują do tej puli Camelot")
                 return None
 
-            # Pobierz decimals
+            # decimale
             dec0, dec1 = token_decimals
-            dec_in = dec0 if token_manager.get_address_by_symbol(token_from).lower() == pool.functions.token0().call().lower() else dec1
-            dec_out = dec1 if dec_in == dec0 else dec0
+            is0 = token_in_addr.lower() == t0
+            dec_in  = dec0 if is0 else dec1
+            dec_out = dec1 if is0 else dec0
 
-            # Przygotuj amount_in w wei
-            amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
-            print(f"Amount in wei: {amount_in_wei}")
+            # amount_in w wei
+            amount_in_wei = int(amount_in * (10 ** dec_in))
 
-            # Wywołaj Quoter
-            amount_out_wei = quoter.functions.quoteExactInputSingle(
+                        # 7) Sprawdź wystarczalność rezerwy in
+            reserve_in_wei = bal0_wei if is0 else bal1_wei
+            reserve_out_wei = bal1_wei if is0 else bal0_wei
+            if amount_in_wei > reserve_in_wei:
+                print(f"Brak płynności: żądane {amount_in_wei} > rezerwa {reserve_in_wei}")
+                return None
+
+            # wywołanie quoter'a Camelot (tu zwraca (amountOut, feeUsed))
+            amount_out_wei, _fee_used = quoter.functions.quoteExactInputSingle(
                 token_in_addr,
                 token_out_addr,
-                fee_tier,
                 amount_in_wei,
-                0  # sqrtPriceLimitX96 = 0 (bez limitu)
+                0  # priceLimitX96 = 0 (bez limitu)
             ).call()
-            print(f"Amount out wei: {amount_out_wei}")
 
-            # Konwersja na Decimal
             actual_out = Decimal(amount_out_wei) / Decimal(10 ** dec_out)
-            print(f"Actual out (Decimal): {actual_out}")
 
-            # Oblicz idealny output na podstawie ceny
-            slot0 = pool.functions.slot0().call()
-            sqrt_x96 = slot0[0]
-            ratio_x96 = Decimal(sqrt_x96) / Decimal(2**96)
-            price_chain = ratio_x96 ** 2
+            # pobierz sqrtPriceX96 z globalState
+            global_state = pool.functions.globalState().call()
+            sqrtX96 = global_state[0]
+            ratio   = Decimal(sqrtX96) / Decimal(2**96)
+            price_chain = ratio ** 2
+            # skala przy uwzględnieniu różnicy dec0/dec1
             scale = Decimal(10 ** (dec0 - dec1))
-            is0 = token_manager.get_address_by_symbol(token_from).lower() == pool.functions.token0().call().lower()
-            price_before = price_chain * scale if is0 else (Decimal(1) / (price_chain * scale))
-            ideal_out = amount_in * price_before
-            print(f"Ideal out: {ideal_out}, Price before: {price_before}")
+            price_before = price_chain * scale if is0 else Decimal(1) / (price_chain * scale)
 
-            # Oblicz slippage
-            if ideal_out > 0:
-                slippage = (ideal_out - actual_out) / ideal_out
-            else:
-                return None
+            ideal_out = amount_in * price_before
+
+            slippage = (ideal_out - actual_out) / ideal_out if ideal_out > 0 else Decimal(0)
+            slippage = max(slippage, Decimal(0))
 
             return {
                 "amount_out": actual_out,
-                "slippage": max(Decimal("0"), slippage),
+                "slippage": slippage,
                 "price_before": price_before
             }
 
         except Exception as e:
-            print(f"Błąd get_slippage (quoter): {e}")
+            print(f"Błąd get_slippage (Camelot quoter): {e}")
             return None

@@ -206,10 +206,10 @@ class SushiswapService(IPairPriceService):
         token_decimals: Tuple[int, int],
     ) -> Optional[Dict[str, Decimal]]:
         """
-        Szacuje slippage za pomocą Quoter V3:
-        - amount_out: ile token_to otrzymasz (bez opłaty za swap),
-        - slippage  : (ideal_out - actual_out) / ideal_out,
-        - price_before: początkowy kurs token_to/token_from.
+        Szacuje slippage za pomocą Quoter V3, ale najpierw sprawdza dostępność płynności:
+        - amount_out   : ile token_to otrzymasz,
+        - slippage     : (ideal_out - actual_out) / ideal_out,
+        - price_before : początkowy kurs token_to/token_from.
         """
         try:
             # 1) Pool + Quoter
@@ -217,44 +217,54 @@ class SushiswapService(IPairPriceService):
             quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)
 
             # 2) Fee tier
-            fee_tier = pool.functions.fee().call()  # 500, 3000, 10000
+            fee_tier = pool.functions.fee().call()
 
-            # 3) Oblicz idealny kurs na podstawie sqrtPriceX96
-            slot0      = pool.functions.slot0().call()
-            sqrt_x96   = slot0[0]
+            # 3) Adresy tokenów i kierunek
+            token0_addr = pool.functions.token0().call()
+            token1_addr = pool.functions.token1().call()
             dec0, dec1 = token_decimals
+            is0 = (token_manager.get_address_by_symbol(token_from).lower() == token0_addr.lower())
+            dec_in, dec_out = (dec0, dec1) if is0 else (dec1, dec0)
 
-            # sqrtPriceX96 → price token1/token0
-            ratio_x96       = Decimal(sqrt_x96) / Decimal(2**96)
-            price_chain     = ratio_x96 ** 2
-            scale           = Decimal(10 ** (dec0 - dec1))
-            # jeśli token_from == token0 → price_before = token1/token0,
-            # w przeciwnym wypadku bierzemy odwrotność
-            t0_addr = pool.functions.token0().call().lower()
-            is0    = (token_manager.get_address_by_symbol(token_from).lower() == t0_addr)
-            price_before = price_chain * scale if is0 else (Decimal(1) / (price_chain * scale))
+            # 4) Sprawdzenie rezerw w wei
+            erc0 = w3.eth.contract(address=Web3.to_checksum_address(token0_addr), abi=erc20_abi)
+            erc1 = w3.eth.contract(address=Web3.to_checksum_address(token1_addr), abi=erc20_abi)
+            bal0 = erc0.functions.balanceOf(pool_address).call()
+            bal1 = erc1.functions.balanceOf(pool_address).call()
+            reserve_in_wei  = bal0 if is0 else bal1
+            reserve_out_wei = bal1 if is0 else bal0
 
-            ideal_out = amount_in * price_before
-
-            # 4) Quoter: quoteExactInputSingle
-            dec_in        = dec0 if is0 else dec1
-            dec_out       = dec1 if is0 else dec0
+            # 5) amount_in → wei i walidacja
             amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
+            if amount_in_wei > reserve_in_wei:
+                print(f"Brak płynności: żądane {amount_in_wei} > rezerwa {reserve_in_wei}")
+                return None
 
-            token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
-            token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
-
+            # 6) Quoter
             amount_out_wei = quoter.functions.quoteExactInputSingle(
-                token_in_addr,
-                token_out_addr,
+                Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from)),
+                Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to)),
                 fee_tier,
                 amount_in_wei,
-                0  # sqrtPriceLimitX96 = 0 (bez limitu)
+                0
             ).call()
+            if amount_out_wei > reserve_out_wei:
+                print(f"Brak płynności wyjścia: {amount_out_wei} > {reserve_out_wei}")
+                return None
 
+            # 7) Konwersja actual_out
             actual_out = Decimal(amount_out_wei) / Decimal(10 ** dec_out)
 
-            # 5) Slippage
+            # 8) Obliczenie ideal_out na podstawie slot0
+            slot0 = pool.functions.slot0().call()
+            sqrt_x96 = slot0[0]
+            ratio_x96 = Decimal(sqrt_x96) / Decimal(2**96)
+            price_chain = ratio_x96 ** 2
+            scale = Decimal(10 ** (dec0 - dec1))
+            price_before = price_chain * scale if is0 else (Decimal(1) / (price_chain * scale))
+            ideal_out = amount_in * price_before
+
+            # 9) Slippage
             slippage = (ideal_out - actual_out) / ideal_out if ideal_out > 0 else Decimal(0)
 
             return {

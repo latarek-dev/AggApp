@@ -4,7 +4,26 @@ from interfaces import IPairPriceService
 from config import uniswap_abi, erc20_abi, w3
 from price_calculation import uniswap_calculation
 from liquidity_calculation import calculate_liquidity
+from token_manager import TokenManager
 from web3 import Web3
+from pools_config import TOKENS
+
+token_manager = TokenManager(TOKENS)
+QUOTER_ADDRESS = Web3.to_checksum_address("0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6")
+quoter_abi = [
+    {
+      "inputs":[
+        {"internalType":"address","name":"tokenIn","type":"address"},
+        {"internalType":"address","name":"tokenOut","type":"address"},
+        {"internalType":"uint24","name":"fee","type":"uint24"},
+        {"internalType":"uint256","name":"amountIn","type":"uint256"},
+        {"internalType":"uint160","name":"sqrtPriceLimitX96","type":"uint160"}
+      ],
+      "name":"quoteExactInputSingle",
+      "outputs":[{"internalType":"uint256","name":"amountOut","type":"uint256"}],
+      "stateMutability":"view","type":"function"
+    }
+]
 
 class UniswapService(IPairPriceService):
     """Serwis pobierający ceny z Uniswap V3."""
@@ -113,67 +132,72 @@ class UniswapService(IPairPriceService):
             print(f"Błąd przy tworzeniu podsumowania kosztów Uniswap: {e}")
             return None
 
-    def get_slippage(self, amount_in: Decimal, amount_out: Decimal, liquidity: Tuple[Decimal, Decimal], is_token0_from: bool) -> Optional[Decimal]:
+    def get_slippage(
+        self,
+        pool_address: str,
+        amount_in: Decimal,
+        token_from: str,
+        token_to: str,
+        token_decimals: Tuple[int, int],
+    ) -> Optional[Dict[str, Decimal]]:
         """
-        Szacuje slippage na podstawie ilości wejściowej i sald tokenów w puli.
-
-        Args:
-            amount_in: Ilość tokenów wejściowych (token_from) w jednostkach dziesiętnych.
-            liquidity: Krotka (balance0, balance1) w jednostkach dziesiętnych.
-            is_token0_from: Czy token_from to token0 w puli (True) czy token1 (False).
-
-        Returns:
-            Slippage jako liczba dziesiętna (np. 0.005 dla 0.5%).
+        Szacuje slippage za pomocą Quoter V3:
+        - amount_out: ile token_to otrzymasz (bez opłaty za swap),
+        - slippage  : (ideal_out - actual_out) / ideal_out,
+        - price_before: początkowy kurs token_to/token_from.
         """
         try:
-            # Konwersja na Decimal, jeśli nie są już tego typu
-            amount_in = Decimal(amount_in)
-            amount_out = Decimal(amount_out)
-            print("amount_in", amount_in)
-            print("amount_out (żądane):", amount_out)
-            print("liquidity krotka balansy", liquidity)
-            if liquidity is None or (liquidity[0] == 0 and liquidity[1] == 0):
-                print("Brak płynności - nie można obliczyć slippage.")
-                return None
+            # 1) Pool + Quoter
+            pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
+            quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)
 
-            reserve_in = liquidity[0] if is_token0_from else liquidity[1]
-            reserve_out = liquidity[1] if is_token0_from else liquidity[0]
-            reserve_in, reserve_out = reserve_in, reserve_out
+            # 2) Fee tier
+            fee_tier = pool.functions.fee().call()  # 500, 3000, 10000
 
-            if reserve_in == 0 or reserve_out == 0:
-                print("Brak płynności dla jednego z tokenów.")
-                return None
+            # 3) Oblicz idealny kurs na podstawie sqrtPriceX96
+            slot0      = pool.functions.slot0().call()
+            sqrt_x96   = slot0[0]
+            dec0, dec1 = token_decimals
 
-            # Zabezpieczenie: żądany amount_out nie może przekraczać puli
-            if amount_out >= reserve_out:
-                print("Zbyt duża kwota wyjściowa w stosunku do płynności.")
-                slippage = Decimal('0.999')  # Maksymalny slippage (99.9%)
-                return slippage
+            # sqrtPriceX96 → price token1/token0
+            ratio_x96       = Decimal(sqrt_x96) / Decimal(2**96)
+            price_chain     = ratio_x96 ** 2
+            scale           = Decimal(10 ** (dec0 - dec1))
+            # jeśli token_from == token0 → price_before = token1/token0,
+            # w przeciwnym wypadku bierzemy odwrotność
+            t0_addr = pool.functions.token0().call().lower()
+            is0    = (token_manager.get_address_by_symbol(token_from).lower() == t0_addr)
+            price_before = price_chain * scale if is0 else (Decimal(1) / (price_chain * scale))
 
-            # Krok 1: Użyj amount_out jako expected_amount_out
-            expected_amount_out = amount_out
+            ideal_out = amount_in * price_before
 
-            # Krok 2: Rzeczywisty amount_out z AMM (bez opłaty)
-            new_reserve_in = reserve_in + amount_in
-            new_reserve_out = (reserve_in * reserve_out) / new_reserve_in
-            actual_amount_out = reserve_out - new_reserve_out
-            print("Rzeczywisty amount_out (z AMM):", actual_amount_out)
+            # 4) Quoter: quoteExactInputSingle
+            dec_in        = dec0 if is0 else dec1
+            dec_out       = dec1 if is0 else dec0
+            amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
 
-            # Zabezpieczenie: jeśli actual_amount_out przekracza pulę, ustaw maksymalny slippage
-            if actual_amount_out >= reserve_out:
-                print("Rzeczywisty amount_out przekracza rezerwę w puli!")
-                slippage = Decimal('0.999')
-                return slippage
+            token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
+            token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
 
-            slippage = (expected_amount_out - actual_amount_out) / expected_amount_out
-            print("Obliczony slippage:", slippage)
+            amount_out_wei = quoter.functions.quoteExactInputSingle(
+                token_in_addr,
+                token_out_addr,
+                fee_tier,
+                amount_in_wei,
+                0  # sqrtPriceLimitX96 = 0 (bez limitu)
+            ).call()
 
-            if slippage < 0:
-                print("Uwaga: Negatywny slippage, ustawiam na 0.")
-                slippage = Decimal('0')
+            actual_out = Decimal(amount_out_wei) / Decimal(10 ** dec_out)
 
-            return slippage
+            # 5) Slippage
+            slippage = (ideal_out - actual_out) / ideal_out if ideal_out > 0 else Decimal(0)
+
+            return {
+                "amount_out": actual_out,
+                "slippage": max(slippage, Decimal(0)),
+                "price_before": price_before
+            }
 
         except Exception as e:
-            print(f"Błąd przy obliczaniu slippage: {e}")
+            print(f"Błąd get_slippage (quoter): {e}")
             return None

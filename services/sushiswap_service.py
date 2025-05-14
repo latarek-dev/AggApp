@@ -4,7 +4,26 @@ from interfaces import IPairPriceService
 from config import sushiswap_abi, erc20_abi, w3
 from price_calculation import uniswap_calculation
 from liquidity_calculation import calculate_liquidity
+from token_manager import TokenManager
 from web3 import Web3
+from pools_config import TOKENS
+
+token_manager = TokenManager(TOKENS)
+QUOTER_ADDRESS = Web3.to_checksum_address("0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6")
+quoter_abi = [
+    {
+      "inputs":[
+        {"internalType":"address","name":"tokenIn","type":"address"},
+        {"internalType":"address","name":"tokenOut","type":"address"},
+        {"internalType":"uint24","name":"fee","type":"uint24"},
+        {"internalType":"uint256","name":"amountIn","type":"uint256"},
+        {"internalType":"uint160","name":"sqrtPriceLimitX96","type":"uint160"}
+      ],
+      "name":"quoteExactInputSingle",
+      "outputs":[{"internalType":"uint256","name":"amountOut","type":"uint256"}],
+      "stateMutability":"view","type":"function"
+    }
+]
 
 class SushiswapService(IPairPriceService):
     """Serwis pobierający ceny z Sushiswap V3."""
@@ -176,4 +195,74 @@ class SushiswapService(IPairPriceService):
 
         except Exception as e:
             print(f"Błąd przy obliczaniu slippage: {e}")
+            return None
+
+    def get_slippage(
+        self,
+        pool_address: str,
+        amount_in: Decimal,
+        token_from: str,
+        token_to: str,
+        token_decimals: Tuple[int, int],
+    ) -> Optional[Dict[str, Decimal]]:
+        """
+        Szacuje slippage za pomocą Quoter V3:
+        - amount_out: ile token_to otrzymasz (bez opłaty za swap),
+        - slippage  : (ideal_out - actual_out) / ideal_out,
+        - price_before: początkowy kurs token_to/token_from.
+        """
+        try:
+            # 1) Pool + Quoter
+            pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
+            quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)
+
+            # 2) Fee tier
+            fee_tier = pool.functions.fee().call()  # 500, 3000, 10000
+
+            # 3) Oblicz idealny kurs na podstawie sqrtPriceX96
+            slot0      = pool.functions.slot0().call()
+            sqrt_x96   = slot0[0]
+            dec0, dec1 = token_decimals
+
+            # sqrtPriceX96 → price token1/token0
+            ratio_x96       = Decimal(sqrt_x96) / Decimal(2**96)
+            price_chain     = ratio_x96 ** 2
+            scale           = Decimal(10 ** (dec0 - dec1))
+            # jeśli token_from == token0 → price_before = token1/token0,
+            # w przeciwnym wypadku bierzemy odwrotność
+            t0_addr = pool.functions.token0().call().lower()
+            is0    = (token_manager.get_address_by_symbol(token_from).lower() == t0_addr)
+            price_before = price_chain * scale if is0 else (Decimal(1) / (price_chain * scale))
+
+            ideal_out = amount_in * price_before
+
+            # 4) Quoter: quoteExactInputSingle
+            dec_in        = dec0 if is0 else dec1
+            dec_out       = dec1 if is0 else dec0
+            amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
+
+            token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
+            token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
+
+            amount_out_wei = quoter.functions.quoteExactInputSingle(
+                token_in_addr,
+                token_out_addr,
+                fee_tier,
+                amount_in_wei,
+                0  # sqrtPriceLimitX96 = 0 (bez limitu)
+            ).call()
+
+            actual_out = Decimal(amount_out_wei) / Decimal(10 ** dec_out)
+
+            # 5) Slippage
+            slippage = (ideal_out - actual_out) / ideal_out if ideal_out > 0 else Decimal(0)
+
+            return {
+                "amount_out": actual_out,
+                "slippage": max(slippage, Decimal(0)),
+                "price_before": price_before
+            }
+
+        except Exception as e:
+            print(f"Błąd get_slippage (quoter): {e}")
             return None

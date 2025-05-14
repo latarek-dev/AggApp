@@ -145,7 +145,15 @@ async def process_dex_pools(dex_name: str,
         # Oblicz slippage
         is_token0_from = token_from_address.lower() == token_addresses[0].lower()
         print("Czy token 0 jest from", is_token0_from)
-        slippage = dex_service.get_slippage(amount, amount_out_expected, liquidity, is_token0_from)
+        slippage_data = dex_service.get_slippage(pool_address, Decimal(amount), token_from, token_to, token_decimals)
+
+        if slippage_data:
+            amount_out = slippage_data["amount_out"]
+            slippage = slippage_data["slippage"]
+            price_before = slippage_data["price_before"]
+            print("amount_out", amount_out, "slippage", slippage, "price_before", price_before)
+        else:
+            amount_out, slippage, price_before = None, None, None
 
         exchange_amount = amount_out_expected * (1 - dex_fee)
         if slippage is not None:

@@ -192,13 +192,27 @@
                 },
                 body: JSON.stringify({ token_from: tokenFrom, token_to: tokenTo, amount: amount })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Błąd odpowiedzi serwera: ' + response.statusText);
+                }
+
+                const contentType = response.headers.get('Content-Type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Oczekiwano JSON, ale otrzymano: ' + contentType);
+                }
+
+                return response.json();
+            })
             .then(data => {
                 let results = "";
                 
-                if (data.options && data.options.length > 0) {
+                console.log(data.options);
+                console.log(data.options[0]);
+                if (data.options && Array.isArray(data.options) && data.options.length > 0) {
                     // Najlepsza opcja na górze
-                    const bestOption = data.best_option;
+                    const bestOption = data.options[0];
+                    console.log(bestOption);
                     const bestFormattedFrom = bestOption.amount_from.toFixed(6);
                     const bestFormattedTo = bestOption.amount_to.toFixed(6);
                     const bestFormattedFromUSD = bestOption.value_from_usd.toFixed(2);
@@ -213,9 +227,11 @@
                             </div>
                         </div>
                     `;
-        
+                    
+                    const options = data.options.slice(1)
+                    console.log(options);
                     // Dostępne opcje, w tym najlepsza opcja
-                    data.options.forEach(option => {
+                    options.forEach(option => {
                         const formattedFrom = option.amount_from.toFixed(6);  // Formatowanie ilości tokenu do 2 miejsc po przecinku
                         const formattedTo = option.amount_to.toFixed(6);  // Formatowanie ilości tokenu do 6 miejsc po przecinku
                         const formattedFromUSD = option.value_from_usd.toFixed(2);  // Formatowanie wartości USD do 2 miejsc po przecinku

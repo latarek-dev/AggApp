@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi import Request
 from routes import exchange_router
@@ -23,15 +23,22 @@ async def lifespan_handler(app: FastAPI):
 app = FastAPI(
     lifespan=lifespan_handler
 )
-templates = Jinja2Templates(directory="templates")
+
+# CORS – umożliwia połączenie z frontem React (localhost:3000)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Podłączenie routera z endpointami wymiany
 app.include_router(exchange_router)
 
-@app.get("/", response_class=HTMLResponse)
-async def get_index(request: Request):
-    return templates.TemplateResponse("exchange_app.html", {"request": request})
-
+@app.get("/")
+async def root():
+    return {"message": "API działa poprawnie"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)

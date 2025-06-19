@@ -23,12 +23,19 @@ function App() {
       });
   };
 
-  return (
-    <div>
+ return (
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center">
       <Header />
-      <div className="container">
-        <ExchangeForm onSubmit={handleExchange} />
-        <Results options={results} tokenFrom={tokens.tokenFrom} tokenTo={tokens.tokenTo} />
+      <div className="flex flex-col lg:flex-row gap-6 mt-4 px-4 md:px-8 w-full max-w-6xl">
+        {/* Left Section: Exchange Form */}
+        <div className="flex-1 max-w-lg mt-16">
+          <ExchangeForm onSubmit={handleExchange} />
+        </div>
+
+        {/* Right Section: Results */}
+        <div className="flex-1 max-w-lg ml-12">
+          <Results options={results} tokenFrom={tokens.tokenFrom} tokenTo={tokens.tokenTo} />
+        </div>
       </div>
     </div>
   );

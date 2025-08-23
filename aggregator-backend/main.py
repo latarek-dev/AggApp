@@ -4,27 +4,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi import Request
 from routes import exchange_router
-import redis.asyncio as redis  # Nowa wersja Redis
+import redis.asyncio as redis
 from config import REDIS_URL
 
-# Funkcja lifespan do zarządzania połączeniem Redis
 async def lifespan_handler(app: FastAPI):
-    # Inicjalizacja Redis przy starcie aplikacji
-    redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
-    print("Połączono z Redis!")
-    
-    yield  # Ten punkt oznacza "życie" aplikacji
-    
-    # Zamknięcie połączenia Redis przy zamykaniu aplikacji
+    redis_client = redis.from_url(REDIS_URL, decode_responses=True)
+    try:
+        await redis_client.ping()
+        print(f"Połączono z Redis! ({REDIS_URL})")
+    except Exception as e:
+        print(f"[Startup] Nie udało się połączyć z Redis ({REDIS_URL}): {e}")
+
+    yield
     await redis_client.close()
     print("Zamknięto połączenie z Redis")
 
-# Inicjalizacja aplikacji FastAPI
+
 app = FastAPI(
     lifespan=lifespan_handler
 )
 
-# CORS – umożliwia połączenie z frontem React (localhost:3000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -33,7 +32,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# Podłączenie routera z endpointami wymiany
 app.include_router(exchange_router)
 
 @app.get("/")

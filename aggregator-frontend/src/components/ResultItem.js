@@ -1,11 +1,15 @@
 import PercentageChange from "./PercentageChange";
 import { FaExchangeAlt } from "react-icons/fa";
 
-const ResultItem = ({ option, tokenFrom, tokenTo, index }) => {
+const ResultItem = ({ option, tokenFrom, tokenTo, index, isSelected, onSelect }) => {
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border border-gray-700/50 shadow-md rounded-lg p-3 hover:shadow-lg hover:border-gray-600 transition-all duration-300 transform hover:scale-[1.002]">
+    <div className={`bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-[1.002] ${
+      isSelected 
+        ? 'border-2 border-gradient-to-r from-blue-500 to-purple-600' 
+        : 'border border-gray-700/50 hover:border-gray-600'
+    }`}>
       {/* Main Content - Horizontal Layout */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-3">
         {/* Left Side - Token Info and Ranking */}
         <div className="flex items-center space-x-3 flex-1">
           <div className="w-7 h-7 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center text-white text-xs font-bold">
@@ -44,9 +48,18 @@ const ResultItem = ({ option, tokenFrom, tokenTo, index }) => {
         {/* Right Side - Actions */}
         <div className="flex items-center space-x-2 flex-shrink-0">
           <PercentageChange fromUsd={option.value_from_usd} toUsd={option.value_to_usd} />
-          <button className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-2.5 py-1.5 rounded-lg font-medium hover:from-gray-500 hover:to-gray-600 transform hover:scale-105 transition-all duration-300 text-xs">
-            Wybierz
-          </button>
+          {isSelected ? (
+            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-2.5 py-1.5 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-xs">
+              Wymień
+            </button>
+          ) : (
+            <button 
+              onClick={onSelect}
+              className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-2.5 py-1.5 rounded-lg font-medium hover:from-gray-500 hover:to-gray-600 transform hover:scale-105 transition-all duration-300 text-xs"
+            >
+              Wybierz
+            </button>
+          )}
         </div>
       </div>
     </div>

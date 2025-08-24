@@ -2,7 +2,7 @@ import ResultItem from "./ResultItem";
 import BestOption from "./BestOption";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 
-const Results = ({ options, tokenFrom, tokenTo, isLoading }) => {
+const Results = ({ options, tokenFrom, tokenTo, isLoading, selectedOfferIndex, onSelectOffer }) => {
   if (isLoading) {
     return (
       <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border border-gray-700/50 shadow-2xl rounded-2xl p-5 max-w-2xl">
@@ -41,7 +41,13 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading }) => {
       </div>
 
       {/* Best Option */}
-      <BestOption option={bestOption} tokenFrom={tokenFrom} tokenTo={tokenTo} />
+      <BestOption 
+        option={bestOption} 
+        tokenFrom={tokenFrom} 
+        tokenTo={tokenTo}
+        isSelected={selectedOfferIndex === 0}
+        onSelect={() => onSelectOffer(0)}
+      />
 
       {/* Other Options */}
       {otherOptions.length > 0 && (
@@ -51,7 +57,15 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading }) => {
           </h3>
           <div className="max-h-[500px] overflow-y-auto space-y-2 pr-2">
             {otherOptions.map((opt, i) => (
-              <ResultItem key={i} option={opt} tokenFrom={tokenFrom} tokenTo={tokenTo} index={i} />
+              <ResultItem 
+                key={i} 
+                option={opt} 
+                tokenFrom={tokenFrom} 
+                tokenTo={tokenTo} 
+                index={i}
+                isSelected={selectedOfferIndex === i + 1}
+                onSelect={() => onSelectOffer(i + 1)}
+              />
             ))}
           </div>
         </div>

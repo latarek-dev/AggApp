@@ -7,10 +7,12 @@ function App() {
   const [results, setResults] = useState([]);
   const [tokens, setTokens] = useState({ tokenFrom: "", tokenTo: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedOfferIndex, setSelectedOfferIndex] = useState(0); // 0 = best option, 1+ = other options
 
   const handleExchange = async (data) => {
     setIsLoading(true);
     setTokens({ tokenFrom: data.token_from, tokenTo: data.token_to });
+    setSelectedOfferIndex(0); // Reset to best option when new search
 
     try {
       const response = await fetch("/exchange", {
@@ -27,6 +29,10 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSelectOffer = (index) => {
+    setSelectedOfferIndex(index);
   };
 
   return (
@@ -47,6 +53,8 @@ function App() {
               tokenFrom={tokens.tokenFrom} 
               tokenTo={tokens.tokenTo}
               isLoading={isLoading}
+              selectedOfferIndex={selectedOfferIndex}
+              onSelectOffer={handleSelectOffer}
             />
           </div>
         </div>

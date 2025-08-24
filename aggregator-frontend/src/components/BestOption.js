@@ -2,9 +2,13 @@ import React from "react";
 import PercentageChange from "./PercentageChange";
 import { FaCrown, FaExchangeAlt } from "react-icons/fa";
 
-const BestOption = ({ option, tokenFrom, tokenTo }) => {
+const BestOption = ({ option, tokenFrom, tokenTo, isSelected, onSelect }) => {
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border-2 border-gradient-to-r from-yellow-400 to-orange-500 shadow-lg rounded-lg p-4 relative">
+    <div className={`bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border-2 rounded-lg shadow-lg relative transition-all duration-300 ${
+      isSelected 
+        ? 'border-gradient-to-r from-yellow-400 to-orange-500' 
+        : 'border-gray-700/50 hover:border-gray-600'
+    }`}>
       {/* Best Option Badge */}
       <div className="absolute -top-1 -left-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-1.5 py-0.5 rounded-full text-xs font-bold flex items-center space-x-1">
         <FaCrown size={8} />
@@ -12,7 +16,7 @@ const BestOption = ({ option, tokenFrom, tokenTo }) => {
       </div>
 
       {/* Main Content - Horizontal Layout */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-4">
         {/* Left Side - Token Info */}
         <div className="flex items-center space-x-4 flex-1">
           <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -48,9 +52,18 @@ const BestOption = ({ option, tokenFrom, tokenTo }) => {
         {/* Right Side - Actions */}
         <div className="flex items-center space-x-3 flex-shrink-0">
           <PercentageChange fromUsd={option.value_from_usd} toUsd={option.value_to_usd} />
-          <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-xs">
-            Wymień
-          </button>
+          {isSelected ? (
+            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-xs">
+              Wymień
+            </button>
+          ) : (
+            <button 
+              onClick={onSelect}
+              className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-2 rounded-lg font-semibold hover:from-gray-500 hover:to-gray-600 transform hover:scale-105 transition-all duration-300 text-xs"
+            >
+              Wybierz
+            </button>
+          )}
         </div>
       </div>
     </div>

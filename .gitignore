@@ -16,6 +16,7 @@ env/
 venv/
 ENV/
 *.env          # prawdziwy plik z secretami
+.env
 *.sqlite3
 
 # -------------------------

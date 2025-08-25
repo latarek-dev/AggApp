@@ -1,4 +1,6 @@
+# ---------------------------------
 # Python
+# ---------------------------------
 *.py[cod]
 *.pyo
 *.pyd
@@ -9,22 +11,59 @@ __pycache__/
 *.nox
 *.coverage
 *.hypothesis/
+.coverage*
+.cache/
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+*.sqlite3
+
+# virtualenv
 .venv/
 env/
 venv/
 ENV/
-*.env
+env.bak/
+venv.bak/
 
-# IDE
+# lokalne pliki środowiskowe
+*.env
+!.env.example   # wyjątek jeśli chcesz mieć szablon env w repo
+
+# ---------------------------------
+# IDE / edytory
+# ---------------------------------
 .vscode/
 .idea/
+*.iml
 
-# systemy operacyjne
+# ---------------------------------
+# System
+# ---------------------------------
 .DS_Store
 Thumbs.db
 
-# pliki logów
+# ---------------------------------
+# Logi
+# ---------------------------------
 *.log
+logs/
+*.out
+*.err
 
-# pliki konfiguracyjne Pythona
-*.sqlite3
+# ---------------------------------
+# Docker
+# ---------------------------------
+# ignorujemy lokalne pliki i buildy
+docker-compose.override.yml
+.docker/
+*.pid
+
+# ---------------------------------
+# Redis / DB / Cache
+# ---------------------------------
+dump.rdb
+*.rdb
+*.aof
+*.db

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./aggregator-backend
+    container_name: agg-api
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://:redispw@redis:6379/0}
+      - RPC_URL=${RPC_URL:-https://arb1.arbitrum.io/rpc}
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: agg-redis
+    command: ["redis-server", "--requirepass", "redispw", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"   # wystawiamy na hosta — przydatne do debugowania
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redispw", "PING"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    restart: unless-stopped

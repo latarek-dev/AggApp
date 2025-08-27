@@ -1,7 +1,6 @@
 from web3 import Web3
 import json
 import os
-import redis.asyncio as redis
 from decimal import getcontext
 
 # Ustawienie precyzji dla obliczeń dziesiętnych
@@ -28,6 +27,3 @@ with open('camelot_abi.json') as f:
 
 with open('erc20_abi.json') as f:
     erc20_abi = json.load(f)
-
-async def get_redis():
-    return redis.from_url(REDIS_URL, decode_responses=True)

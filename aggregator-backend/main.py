@@ -4,19 +4,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi import Request
 from routes import exchange_router
-import redis.asyncio as redis
-from config import REDIS_URL
+from services.redis_service import redis_service
 
 async def lifespan_handler(app: FastAPI):
-    redis_client = redis.from_url(REDIS_URL, decode_responses=True)
     try:
-        await redis_client.ping()
-        print(f"Połączono z Redis! ({REDIS_URL})")
+        success = await redis_service.connect()
+        if success:
+            print(f"Połączono z Redis!")
+        else:
+            print(f"[Startup] Nie udało się połączyć z Redis")
     except Exception as e:
-        print(f"[Startup] Nie udało się połączyć z Redis ({REDIS_URL}): {e}")
+        print(f"[Startup] Błąd podczas łączenia z Redis: {e}")
 
     yield
-    await redis_client.close()
+    # Zamykanie połączenia z Redis
+    await redis_service.close()
     print("Zamknięto połączenie z Redis")
 
 

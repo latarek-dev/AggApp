@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSync, FaCog, FaClock } from "react-icons/fa";
+import { FaSync, FaCog, FaClock, FaInfoCircle } from "react-icons/fa";
 
 const SettingsPanel = ({ 
   autoRefresh, 
@@ -71,14 +71,16 @@ const SettingsPanel = ({
         {/* Divider */}
         <div className="border-t border-gray-700 my-6"></div>
 
-        {/* Future Settings Placeholder */}
-        <div className="space-y-4">
-          <h4 className="text-gray-400 text-sm font-medium">Wkrótce</h4>
-          <div className="space-y-2">
-            <div className="text-xs text-gray-500">• Powiadomienia o zmianach cen</div>
-            <div className="text-xs text-gray-500">• Filtry DEX</div>
-            <div className="text-xs text-gray-500">• Preferencje wyświetlania</div>
-            <div className="text-xs text-gray-500">• Eksport wyników</div>
+        {/* Info Section */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-2">
+            <FaInfoCircle className="text-gray-400" size={14} />
+            <span className="text-gray-400 text-xs font-medium">O aplikacji</span>
+          </div>
+          
+          <div className="text-xs text-gray-500 leading-relaxed">
+            AggApp porównuje kursy wymiany z różnych DEX-ów w czasie rzeczywistym, 
+            pomagając znaleźć najlepsze oferty dla Twoich transakcji.
           </div>
         </div>
       </div>

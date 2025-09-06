@@ -33,8 +33,8 @@ const BestOption = ({ option, tokenFrom, tokenTo, isSelected, onSelect }) => {
         ? 'border-gradient-to-r from-green-400 to-emerald-800' 
         : 'border-gray-700/50 hover:border-gray-600'
     }`}>
-      {/* Best Option Badge */}
-      <div className="absolute -top-1 -left-1 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 px-1.5 py-0.5 rounded-full text-xs font-bold flex items-center space-x-1">
+      {/* Best Option Badge - Przesunięte bardziej w lewo i w górę */}
+      <div className="absolute -top-3 -left-3 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 px-2 py-1 rounded-full text-xs font-bold flex items-center space-x-1 z-10">
         <FaCrown size={8} />
         <span className="text-xs">NAJLEPSZA</span>
       </div>

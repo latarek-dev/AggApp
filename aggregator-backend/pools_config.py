@@ -19,7 +19,7 @@ SUSHISWAP_POOLS = {
 }
 
 CAMELOT_POOLS = {
-    "USDC/ETH": {"address": "0xB1026b8e7276e7AC75410F1fcbbe21796e8f7526"},  # Podmień na prawdziwe adresy
+    "USDC/ETH": {"address": "0xB1026b8e7276e7AC75410F1fcbbe21796e8f7526"},
     "USDT/ETH": {"address": "0x7CcCBA38E2D959fe135e79AEBB57CCb27B128358"},
 }
 

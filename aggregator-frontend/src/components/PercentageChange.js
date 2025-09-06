@@ -1,25 +1,31 @@
 import React from "react";
-import { getDifferencePercent } from "../getDifferencePercent";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
-const PercentageChange = ({ fromUsd, toUsd }) => {
-  const percentDiff = getDifferencePercent(fromUsd, toUsd);
-  const isPositive = parseFloat(percentDiff) >= 0;
+const PercentageChange = ({ value }) => {
+  if (value === null || value === undefined || isNaN(value)) {
+    return (
+      <div className="flex items-center space-x-1 text-gray-400">
+        <span className="text-sm">-</span>
+      </div>
+    );
+  }
+
+  const isPositive = value > 0;
+  const isNegative = value < 0;
+  const absValue = Math.abs(value);
 
   return (
-    <div className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-lg font-semibold text-xs ${
+    <div className={`flex items-center space-x-1 ${
       isPositive 
-        ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-        : 'bg-red-500/20 text-red-400 border border-red-500/30'
+        ? 'text-green-400' 
+        : isNegative 
+        ? 'text-red-400' 
+        : 'text-gray-400'
     }`}>
-      {isPositive ? (
-        <FaArrowUp size={12} className="text-green-400" />
-      ) : (
-        <FaArrowDown size={12} className="text-red-400" />
-      )}
-      <span>
-        {isPositive ? "+" : ""}
-        {percentDiff}%
+      {isPositive && <FaArrowUp className="text-sm" />}
+      {isNegative && <FaArrowDown className="text-sm" />}
+      <span className="text-sm font-bold">
+        {isPositive ? '+' : ''}{value.toFixed(2)}%
       </span>
     </div>
   );

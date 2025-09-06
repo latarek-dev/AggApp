@@ -12,6 +12,11 @@ class FrontendTransactionOption(BaseModel):
     amount_to: float
     value_from_usd: float
     value_to_usd: float
+    slippage: float
+    liquidity: float
+    dex_fee: float
+    gas_cost: float
+    percentage_change: float
 
 class TransactionOptionRaw(BaseModel):
     dex: str

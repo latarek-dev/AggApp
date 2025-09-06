@@ -5,6 +5,7 @@ from token_manager import TokenManager
 from config import w3
 from services import CoinGeckoService
 from pools_config import TOKENS
+from services.calculation_service import slippage_from_mid_and_actual
 
 token_manager = TokenManager(TOKENS)
 
@@ -55,25 +56,9 @@ async def process_prices(coin_gecko_service, token_addresses, redis_cache_servic
     }
 
     eth_price = all_prices.get(eth_address) if eth_address else None
-    eth_price = Decimal(eth_price)
+    eth_price = Decimal(eth_price) if eth_price else Decimal("0")
 
     return filtered_prices, eth_price
-
-async def get_or_cache_price(redis_cache_service, pool_address, pool_name: str, dex_service, token_decimals, data: dict):
-    # Sprawdzamy, czy cena jest w cache
-    cached_price = await redis_cache_service.get_cached_price(pool_name)
-    if cached_price is None:
-        price_base, price_token = dex_service.get_pair_price(pool_address, token_decimals)
-        if price_base and price_token:
-            await redis_cache_service.set_cached_price(pool_name, price_base)
-            cached_price = price_base
-        else:
-            price_base, price_token = Decimal(0), Decimal(0)
-    else:
-        price_base = Decimal(cached_price)
-        price_token = Decimal(1) / Decimal(price_base) if price_base > 0 else Decimal(0)
-
-    return price_base, price_token
 
 async def process_dex_pools(dex_name: str,
                             pools: dict, 
@@ -102,16 +87,47 @@ async def process_dex_pools(dex_name: str,
         prices, eth_price = await process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address)
         pool_name = f"{dex_name.lower()}_{pair}"
 
-        price_base, price_token = await get_or_cache_price(redis_cache_service, pool_address, pool_name, dex_service, token_decimals, data)
         print("token_from:", token_from)
         print("tokens:", tokens)
         print("amount:", amount)
-        print("price_base:", price_base)
-        print("price_token:", price_token)
-        amount_out_expected = calculate_exchange_amount(token_from, tokens, amount, price_base, price_token)
-        print("exchange_amount:", amount_out_expected)
 
-        # Płynność
+        # 1. Pobierz mid-price z cache lub blockchain
+        cached_mid_price = await redis_cache_service.get_cached_price(pool_name)
+        
+        if cached_mid_price is None:
+            # Brak w cache - pobierz z blockchain (slot0/globalState)
+            print(f"Brak mid-price w cache dla {pool_name}, pobieram z blockchain...")
+            mid_price = dex_service.get_mid_price(pool_address, token_from, token_to, token_decimals)
+            
+            if mid_price and mid_price > 0:
+                # Zapisz w cache
+                await redis_cache_service.set_cached_price(pool_name, mid_price)
+                print(f"Zapisano mid-price {mid_price} w cache dla {pool_name}")
+            else:
+                print(f"Błąd pobierania mid-price z blockchain dla {pool_name}")
+                continue
+        else:
+            # Mamy w cache - użyj bez ponownych obliczeń
+            print(f"Użyto mid-price z cache dla {pool_name}: {cached_mid_price}")
+            mid_price = Decimal(cached_mid_price)
+        
+        if mid_price <= 0:
+            print(f"Brak mid-price dla {pool_address}, pomijam.")
+            continue
+
+        # 2. Pobierz dokładny quote z Quoter (już z fee)
+        amount_out = dex_service.quote_exact_in(pool_address, token_from, token_to, Decimal(amount), token_decimals)
+        if amount_out is None:
+            print(f"Brak quote dla {pool_address}, pomijam.")
+            continue
+
+        print(f"Mid-price: {mid_price}, Amount out: {amount_out}")
+
+        # 3. Oblicz slippage porównując mid-price z actual output
+        slippage = slippage_from_mid_and_actual(Decimal(amount), mid_price, amount_out)
+        print(f"Slippage: {slippage}")
+
+        # 4. Płynność
         liquidity = dex_service.get_liquidity(pool_address, token_addresses, token_decimals, prices)
 
         if liquidity is None:
@@ -134,47 +150,31 @@ async def process_dex_pools(dex_name: str,
         token_from_address = token_manager.get_address_by_symbol(token_from)
         token_to_address = token_manager.get_address_by_symbol(token_to)
 
+        # 5. Koszty transakcji
         dex_fee, gas_cost = dex_service.get_transaction_cost(pool_address, token_from_address, liquidity_usd, eth_price)
+
+        if dex_fee is None or gas_cost is None:
+            print(f"Brak kosztów dla {pool_address}, pomijam.")
+            continue
 
         token_from_price = prices.get(token_from_address, 1)
         token_to_price = prices.get(token_to_address, 1)
 
-        print(token_from_address.lower())
-        print(token_addresses[0].lower())
-        
-        # Oblicz slippage
-        is_token0_from = token_from_address.lower() == token_addresses[0].lower()
-        print("Czy token 0 jest from", is_token0_from)
-        slippage_data = dex_service.get_slippage(pool_address, Decimal(amount), token_from, token_to, token_decimals)
-
-        if slippage_data:
-            amount_out = slippage_data["amount_out"]
-            slippage = slippage_data["slippage"]
-            price_before = slippage_data["price_before"]
-            print("amount_out", amount_out, "slippage", slippage, "price_before", price_before)
-        else:
-            amount_out, slippage, price_before = None, None, None
-
-        exchange_amount = amount_out_expected * (1 - dex_fee)
-        if slippage is not None:
-            exchange_amount = exchange_amount * (1 - slippage)
-        else:
-            print("Pominięto pulę z powodu braku slippage.")
-            continue
-
+        # 6. Wartości USD
         value_from_usd = amount * float(token_from_price)
-        value_to_usd = float(exchange_amount) * float(token_to_price)
+        value_to_usd = float(amount_out) * float(token_to_price)
 
+        # 7. Utwórz TransactionOption
         option = TransactionOption(
             dex=dex_name,
             pool=pair,
-            price=float(price_base if token_from == tokens[1] else price_token),
-            slippage=slippage,
+            price=float(mid_price),
+            slippage=float(slippage),
             liquidity=liquidity_usd,
-            dex_fee=dex_fee,
-            gas_cost=gas_cost,
+            dex_fee=float(dex_fee),
+            gas_cost=float(gas_cost),
             amount_from=amount,
-            amount_to=float(exchange_amount), 
+            amount_to=float(amount_out),  # amount_out z Quoter (już z fee)
             value_from_usd=value_from_usd, 
             value_to_usd=value_to_usd
         )

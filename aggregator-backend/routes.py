@@ -60,18 +60,27 @@ async def exchange(request: ExchangeRequest,
 
     print(f"Opcje wymiany po sortowaniu: {sorted_raw}")
 
-    # mapujemy na FrontendTransactionOption
+    # mapujemy na FrontendTransactionOption z wszystkimi danymi
     frontend_sorted = []
     for raw in sorted_raw:
         full = full_option_map.get((raw.dex, raw.pool))
         if full:
+            # Oblicz percentage_change
+            percentage_change = 0.0
+            if full.value_from_usd > 0 and full.value_to_usd > 0:
+                percentage_change = ((full.value_to_usd - full.value_from_usd) / full.value_from_usd) * 100
+            
             frontend_sorted.append(FrontendTransactionOption(
                 dex=full.dex,
                 pair=full.pool,
                 amount_from=full.amount_from,
                 amount_to=full.amount_to,
                 value_from_usd=full.value_from_usd,
-                value_to_usd=full.value_to_usd
+                value_to_usd=full.value_to_usd,
+                liquidity=full.liquidity,
+                dex_fee=full.dex_fee,
+                gas_cost=full.gas_cost,
+                percentage_change=percentage_change
             ))
 
     print(frontend_sorted)
@@ -81,4 +90,3 @@ async def exchange(request: ExchangeRequest,
         }
     else:
         raise HTTPException(status_code=404, detail="No exchange options available.")
-

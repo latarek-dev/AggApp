@@ -252,6 +252,7 @@ const ExchangeForm = ({ onSubmit }) => {
               value={formData.amount}
               onChange={handleInputChange}
               placeholder="0.0"
+              autoComplete="off"
               className="w-full p-2.5 bg-gray-800/50 border-2 border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-sm font-medium"
             />
             <div className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs font-medium">

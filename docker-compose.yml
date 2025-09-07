@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./aggregator-backend
+    container_name: agg-api
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://:redispw@redis:6379/0}
+      - RPC_URL=${RPC_URL:-https://arb1.arbitrum.io/rpc}
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: agg-redis
+    command: ["redis-server", "--requirepass", "redispw", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"   # wystawiamy na hosta — przydatne do debugowania
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redispw", "PING"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  frontend:
+    build:
+      context: ./aggregator-frontend
+      dockerfile: Dockerfile
+      # Uwaga: tu możesz nadpisać PUBLIC BASE jeśli kiedyś zmienisz ścieżkę proxy
+      args:
+        - VITE_API_PUBLIC_BASE=/api
+    ports:
+      - "8080:80"        # frontend dostępny na http://localhost:8080
+    depends_on:
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 5

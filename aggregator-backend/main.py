@@ -1,22 +1,25 @@
+import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi import Request
 from routes import exchange_router
-import redis.asyncio as redis
-from config import REDIS_URL
+from services.redis_service import redis_service
 
 async def lifespan_handler(app: FastAPI):
-    redis_client = redis.from_url(REDIS_URL, decode_responses=True)
     try:
-        await redis_client.ping()
-        print(f"Połączono z Redis! ({REDIS_URL})")
+        success = await redis_service.connect()
+        if success:
+            print(f"Połączono z Redis!")
+        else:
+            print(f"[Startup] Nie udało się połączyć z Redis")
     except Exception as e:
-        print(f"[Startup] Nie udało się połączyć z Redis ({REDIS_URL}): {e}")
+        print(f"[Startup] Błąd podczas łączenia z Redis: {e}")
 
     yield
-    await redis_client.close()
+    # Zamykanie połączenia z Redis
+    await redis_service.close()
     print("Zamknięto połączenie z Redis")
 
 
@@ -24,13 +27,15 @@ app = FastAPI(
     lifespan=lifespan_handler
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "").strip()
+if allowed_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[o.strip() for o in allowed_origins.split(",") if o.strip()],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 app.include_router(exchange_router)
 

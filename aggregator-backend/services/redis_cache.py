@@ -1,16 +1,14 @@
-from config import get_redis
 from typing import Optional
 from decimal import Decimal
 from interfaces import ICacheService
+from .redis_service import redis_service
 
 class RedisCacheService(ICacheService):
     """Serwis obsługujący cache w Redis."""
 
     async def get_cached_price(self, key: str) -> Optional[float]:
         """Pobiera wartość z Redis."""
-        redis = await get_redis()
-        print(f"Połączenie z Redis: {redis}")  # Debugowanie
-        price = await redis.get(key)
+        price = await redis_service.get(key)
         if price:
             print(f"Znaleziono cenę w Redis: {price}")
         else:
@@ -19,7 +17,8 @@ class RedisCacheService(ICacheService):
 
     async def set_cached_price(self, key: str, value: Decimal, ttl: int = 60) -> None:
         """Zapisuje wartość w Redis."""
-        redis = await get_redis()
-        print(f"Połączenie z Redis: {redis}")  # Debugowanie
-        await redis.set(key, float(value), ex=ttl)
-        print(f"Zapisano cenę {value} w Redis dla {key}")  # Debugowanie
+        success = await redis_service.set(key, float(value), ex=ttl)
+        if success:
+            print(f"Zapisano cenę {value} w Redis dla {key}")
+        else:
+            print(f"Błąd podczas zapisywania ceny {value} w Redis dla {key}")

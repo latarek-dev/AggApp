@@ -32,9 +32,9 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-white text-xl font-bold flex items-center space-x-2">
+      {/* Header - Wyśrodkowany tytuł */}
+      <div className="text-center">
+        <h2 className="text-white text-xl font-bold flex items-center justify-center space-x-2">
           <FaSearch className="text-purple-500" />
           <span>Wyniki wyszukiwania</span>
           {/* Background Refresh Indicator */}
@@ -71,7 +71,7 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
       {/* Other Options */}
       {otherOptions.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-gray-300 text-sm font-medium">
+          <h3 className="text-gray-300 text-sm font-medium text-center">
             Inne dostępne opcje ({otherOptions.length})
           </h3>
           <div className="space-y-3">

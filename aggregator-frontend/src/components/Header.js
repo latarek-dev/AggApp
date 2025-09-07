@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { FaExchangeAlt, FaChartLine, FaWallet, FaCog } from 'react-icons/fa';
+import React from 'react';
+import { FaExchangeAlt, FaChartBar, FaInfoCircle, FaHistory } from 'react-icons/fa';
 
-const Header = () => {
-  const [activeTab, setActiveTab] = useState('swap');
-
+const Header = ({ activeTab, setActiveTab }) => {
   const navItems = [
     { id: 'swap', label: 'Wymiana', icon: FaExchangeAlt },
-    { id: 'portfolio', label: 'Portfolio', icon: FaChartLine },
-    { id: 'wallet', label: 'Portfel', icon: FaWallet },
-    { id: 'settings', label: 'Ustawienia', icon: FaCog },
+    { id: 'stats', label: 'Statystyki', icon: FaChartBar },
+    { id: 'history', label: 'Historia', icon: FaHistory },
+    { id: 'about', label: 'O aplikacji', icon: FaInfoCircle },
   ];
 
   return (

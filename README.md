@@ -1,23 +1,25 @@
-# AggApp – Agregator wymiany tokenów (Arbitrum)
+# AggApp – Agregator wymiany tokenów
 
-Projekt składa się z backendu (FastAPI) i bazy Redis, uruchamianych w kontenerach Dockera.  
-Frontend (React + Tailwind) znajduje się w osobnym folderze i może być uruchamiany niezależnie lub również w Compose.
-
----
-
-## 📦 Technologie
-
-- **Backend**: Python 3.10, FastAPI, Web3.py, Redis (cache), NumPy (TOPSIS)  
-- **Frontend**: React, TailwindCSS  
-- **Infra**: Docker, Docker Compose  
-- **Sieć blockchain**: Arbitrum One (RPC)
+Projekt składa się z:
+- **backendu** (FastAPI + Redis cache),
+- **frontendu** (React + Tailwind, serwowany przez Nginx),
+- uruchamianych razem przez **Docker Compose**.  
 
 ---
 
-## 🚀 Uruchamianie (Docker Compose)
+## Technologie
+
+- **Backend**: Python 3.10, FastAPI, Web3.py, Redis, NumPy
+- **Frontend**: React, TailwindCSS, Nginx  
+- **Infra**: Docker
+- **Sieć blockchain**: Arbitrum One
+
+---
+
+## Uruchamianie (Docker Compose)
 
 ### 1. Wymagania
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (z włączonym WSL2 na Windows)  
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - Git  
 
 ### 2. Klonowanie repozytorium
@@ -32,14 +34,12 @@ Skopiuj przykładowy plik środowiskowy:
 cp .env.example .env
 ```
 
-Domyślna zawartość (możesz zostawić bez zmian):
+Domyślna zawartość (można zostawić bez zmian):
 ```env
 # Backend
 RPC_URL=https://arb1.arbitrum.io/rpc
 REDIS_URL=redis://:redispw@redis:6379/0
 ```
-
-> ⚠️ Prawdziwy `.env` nie jest wersjonowany w Git (jest w `.gitignore`).  
 
 ### 4. Budowanie i uruchamianie
 ```bash
@@ -51,80 +51,42 @@ Podgląd logów backendu:
 docker compose logs -f api
 ```
 
-### 5. Test działania
-Otwórz w przeglądarce:
-```
-http://localhost:8000/
+Podgląd logów frontendu:
+```bash
+docker compose logs -f frontend
 ```
 
-Oczekiwany wynik:
-```json
-{"message": "API działa poprawnie"}
-```
+### 5. Test działania
+- Backend API:  
+  [http://localhost:8000/](http://localhost:8000/)  
+  Oczekiwany wynik:
+  ```json
+  {"message": "API działa poprawnie"}
+  ```
+
+- Frontend (React przez Nginx):  
+  [http://localhost:8080/](http://localhost:8080/)  
 
 ---
 
-## 🗂️ Struktura repozytorium
+## Struktura repozytorium
 
 ```
 AggApp/
 │  .env.example         # szablon zmiennych środowiskowych
-│  docker-compose.yml   # definicja usług Docker (api + redis)
+│  docker-compose.yml   # definicja usług Docker
 │
-├─ aggregator-backend/  # backend (FastAPI, Redis, Web3.py)
+├─ aggregator-backend/
 │   ├─ Dockerfile
 │   ├─ requirements.txt
 │   ├─ config.py
 │   ├─ main.py
 │   └─ ...
 │
-├─ aggregator-frontend/ # frontend (React + Tailwind)
+├─ aggregator-frontend/
+│   ├─ Dockerfile
+│   ├─ nginx.conf
 │   ├─ package.json
 │   ├─ src/
 │   └─ ...
 ```
-
----
-
-## 🖥️ Frontend (dev lokalny)
-
-Frontend można uruchomić niezależnie od backendu (poza Dockerem):
-
-```bash
-cd aggregator-frontend
-npm install
-npm start
-```
-
-Aplikacja frontendowa uruchomi się domyślnie na:  
-👉 [http://localhost:3000](http://localhost:3000)
-
-> W trybie deweloperskim frontend łączy się z backendem pod `http://localhost:8000/api`.
-
----
-
-## 📊 Ranking TOPSIS
-
-Backend po pobraniu ofert z DEX-ów (Uniswap v3, SushiSwap v3, Camelot/Algebra) sortuje je przy pomocy metody **TOPSIS**.  
-Brane pod uwagę kryteria:
-- `amount_to` – ilość tokenu wyjściowego (benefit),  
-- `slippage` – poślizg cenowy (cost),  
-- `liquidity` – płynność puli (benefit),  
-- `dex_fee` – prowizja DEX-u (cost),  
-- `gas_cost` – koszt gazu (cost).  
-
-Wynik → opcje uporządkowane od najlepszego kompromisu do najgorszego.
-
----
-
-## 📝 Notatki developerskie
-
-- `.env` → lokalny, prywatny (nie commitować do Git).  
-- `.env.example` → commitujemy jako szablon dla innych.  
-- Backend łączy się z Redisem przez `redis:6379` (nazwa usługi w Compose).  
-- Po każdej zmianie w `requirements.txt` → przebuduj kontener:
-  ```bash
-  docker compose up -d --build
-  ```
-
----

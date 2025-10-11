@@ -20,7 +20,6 @@ Projekt składa się z:
 
 ### 1. Wymagania
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Git  
 
 ### 2. Klonowanie repozytorium
 ```bash

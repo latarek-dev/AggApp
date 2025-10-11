@@ -67,7 +67,7 @@ class SushiswapService(BaseDexService):
             print(f"Błąd mid_price Sushiswap: {e}")
             return None
 
-    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals) -> Optional[Decimal]:
+    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None) -> Optional[Decimal]:
         try:
             pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
             quoter = w3.eth.contract(address=QUOTER_V2_ADDRESS, abi=QUOTER_V2_ABI)
@@ -78,9 +78,13 @@ class SushiswapService(BaseDexService):
             token_in  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
             token_out = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
 
-            token0 = pool.functions.token0().call()
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
             dec0, dec1 = token_decimals
-            is0_in = token_in.lower() == token0.lower()
+            is0_in = token_in.lower() == token0
             dec_in  = dec0 if is0_in else dec1
             dec_out = dec1 if is0_in else dec0
 
@@ -94,8 +98,13 @@ class SushiswapService(BaseDexService):
                 "sqrtPriceLimitX96": 0,  # bez limitu
             }
 
+            print(f"SushiSwap Quoter: token_in={token_from} ({dec_in} dec), amount_in={amount_in_wei}")
+
             # Zwraca krotkę; bierzemy pierwszy element (amountOut)
             amount_out_wei, _, _, _ = quoter.functions.quoteExactInputSingle(params).call()
+            
+            print(f"SushiSwap response: amount_out_wei={amount_out_wei}")
+            
             return Decimal(amount_out_wei) / (Decimal(10) ** dec_out)
 
         except Exception as e:

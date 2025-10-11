@@ -132,6 +132,7 @@ def get_all_dex_names() -> List[str]:
     """Zwraca listę wszystkich obsługiwanych DEX-ów."""
     return list(DEX_CONFIGS.keys())
 
+# Backward compatibility - stary kod używa tych aliasów
 UNISWAP_POOLS = DEX_CONFIGS["Uniswap"]["pools"]
 SUSHISWAP_POOLS = DEX_CONFIGS["SushiSwap"]["pools"]
 CAMELOT_POOLS  = DEX_CONFIGS["Camelot"]["pools"]

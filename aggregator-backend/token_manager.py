@@ -32,14 +32,23 @@ class TokenManager:
             return token0["decimals"], token1["decimals"]
         return 0, 0
 
-    def get_pool_addresses(self, dex_service, pool_address: str) -> List[str]:
-        pool_contract = w3.eth.contract(address=pool_address, abi=dex_service.abi)
-        token0 = pool_contract.functions.token0().call().lower()
-        token1 = pool_contract.functions.token1().call().lower()
-
-        token0_data = self.get_token_by_address(token0)
-        token1_data = self.get_token_by_address(token1)
-
-        if token0_data and token1_data:
-            return [token0, token1]
-        return []
+    def get_pool_addresses(self, pair: str) -> List[str]:
+        """Wyprowadza adresy tokenów z nazwy pary"""
+        try:
+            tokens = pair.split('/')
+            if len(tokens) != 2:
+                return []
+            
+            token0_symbol, token1_symbol = tokens
+            
+            token0_data = self.tokens.get(token0_symbol.upper())
+            token1_data = self.tokens.get(token1_symbol.upper())
+            
+            if not token0_data or not token1_data:
+                print(f"Brak definicji dla tokenów w parze {pair}")
+                return []
+            
+            return [token0_data["address"].lower(), token1_data["address"].lower()]
+        except Exception as e:
+            print(f"Błąd wyprowadzania tokenów z {pair}: {e}")
+            return []

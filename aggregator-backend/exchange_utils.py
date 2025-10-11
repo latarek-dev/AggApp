@@ -80,9 +80,18 @@ async def process_dex_pools(dex_name: str,
             continue
 
         pool_address = data.get("address")
-        token_addresses = token_manager.get_pool_addresses(dex_service, pool_address)
-
+        
+        print(pair)
+        
+        token_addresses = token_manager.get_pool_addresses(pair)
+        
+        if not token_addresses or len(token_addresses) != 2:
+            print(f"Nie można wyprowadzić tokenów z pary {pair}, pomijam.")
+            continue
+        
         token_decimals = token_manager.get_decimals_for_pool(token_addresses)
+        
+        print(f"Para {pair}: tokens=[{token_addresses[0][:8]}..., {token_addresses[1][:8]}...]")
 
         prices, eth_price = await process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address)
         pool_name = f"{dex_name.lower()}_{pair}"
@@ -116,9 +125,9 @@ async def process_dex_pools(dex_name: str,
             continue
 
         # 2. Pobierz dokładny quote z Quoter (już z fee)
-        amount_out = dex_service.quote_exact_in(pool_address, token_from, token_to, Decimal(amount), token_decimals)
-        if amount_out is None:
-            print(f"Brak quote dla {pool_address}, pomijam.")
+        amount_out = dex_service.quote_exact_in(pool_address, token_from, token_to, Decimal(amount), token_decimals, token_addresses)
+        if amount_out is None or amount_out == 0:
+            print(f"Brak quote lub amount_out=0 dla {pool_address}, pomijam.")
             continue
 
         print(f"Mid-price: {mid_price}, Amount out: {amount_out}")

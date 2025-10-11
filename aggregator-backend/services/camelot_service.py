@@ -88,7 +88,7 @@ class CamelotService(BaseDexService):
             print(f"Błąd mid_price Camelot: {e}")
             return None
 
-    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals) -> Optional[Decimal]:
+    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None) -> Optional[Decimal]:
         """
         Pobiera dokładny quote z Quoter dla Camelot.
         
@@ -98,6 +98,7 @@ class CamelotService(BaseDexService):
             token_to: symbol tokenu wyjściowego
             amount_in: ilość tokenów wejściowych
             token_decimals: (dec0, dec1) decimals tokenów
+            token_addresses: (token0, token1) adresy z config (opcjonalne)
             
         Returns:
             Decimal: amount_out (już z fee)
@@ -109,18 +110,26 @@ class CamelotService(BaseDexService):
             token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
             token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
 
-            token0 = pool.functions.token0().call()
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
             dec0, dec1 = token_decimals
-            is0_in = token_in_addr.lower() == token0.lower()
+            is0_in = token_in_addr.lower() == token0
             dec_in  = dec0 if is0_in else dec1
             dec_out = dec1 if is0_in else dec0
 
             amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
             
+            print(f"Camelot Quoter: token_in={token_from} ({dec_in} dec), amount_in={amount_in_wei}")
+            
             # Camelot Quoter zwraca (amountOut, feeUsed)
             amount_out_wei, _fee_used = quoter.functions.quoteExactInputSingle(
                 token_in_addr, token_out_addr, amount_in_wei, 0
             ).call()
+            
+            print(f"Camelot response: amount_out_wei={amount_out_wei}")
             
             return Decimal(amount_out_wei) / Decimal(10 ** dec_out)
         except Exception as e:

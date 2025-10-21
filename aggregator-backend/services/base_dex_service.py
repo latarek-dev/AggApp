@@ -4,8 +4,32 @@ from config import erc20_abi, w3
 from token_manager import TokenManager
 from web3 import Web3
 from pools_config import TOKENS
+import time
 
 token_manager = TokenManager(TOKENS)
+
+_gas_price_cache = {'value': None, 'timestamp': 0}
+
+def get_cached_gas_price():
+    """
+    Pobiera gas price z cache lub blockchain.
+    Cache TTL: 30 sekund (gas price nie zmienia się szybko).
+    
+    Returns:
+        int: Gas price w wei
+    """
+    current_time = time.time()
+    
+    # Sprawdź czy cache jest aktualny
+    if _gas_price_cache['value'] is not None and _gas_price_cache['timestamp'] + 30 > current_time:
+        return _gas_price_cache['value']
+    
+    # Cache miss lub wygasł - pobierz z blockchain
+    gas_price = w3.eth.gas_price
+    _gas_price_cache['value'] = gas_price
+    _gas_price_cache['timestamp'] = current_time
+    
+    return gas_price
 
 class BaseDexService:
     """
@@ -53,7 +77,7 @@ class BaseDexService:
             if liquidity < 100_000:
                 gas_used += 15_000
 
-            gas_price_wei = w3.eth.gas_price
+            gas_price_wei = get_cached_gas_price()
             print("gas price wei", gas_price_wei)
             gas_price_eth = Web3.from_wei(gas_price_wei, 'ether')
             

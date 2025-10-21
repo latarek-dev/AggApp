@@ -13,7 +13,8 @@ def rank_options(options: List[TransactionOptionRaw]) -> List[TransactionOptionR
     ])
 
     # Krok 2: Normalizacja macierzy
-    norm_matrix = matrix / np.sqrt((matrix ** 2).sum(axis=0))
+    epsilon = 1e-10
+    norm_matrix = matrix / (np.sqrt((matrix ** 2).sum(axis=0)) + epsilon)
 
     # Krok 3: Wagi (ważność kryteriów – możesz je dostosować)
     # Więcej amount_to i liquidity = lepiej, mniej slippage, fee, gas = lepiej

@@ -55,25 +55,33 @@ class SushiswapService(BaseDexService):
             print(f"Błąd fee Sushiswap {pool_address}: {e}")
             return None
 
-    def get_mid_price(self, pool_address, token_from, token_to, token_decimals) -> Optional[Decimal]:
+    def get_mid_price(self, pool_address, token_from, token_to, token_decimals, token_addresses=None) -> Optional[Decimal]:
         try:
             pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
-            token0 = pool.functions.token0().call()
+            
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
             dec0, dec1 = token_decimals
-            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0.lower()
+            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0
             sqrt_x96 = pool.functions.slot0().call()[0]
             return mid_price_from_univ3_sqrt(sqrt_x96, dec0, dec1, is0_in)
         except Exception as e:
             print(f"Błąd mid_price Sushiswap: {e}")
             return None
 
-    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None) -> Optional[Decimal]:
+    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None, pool_fee=None, pair=None) -> Optional[Decimal]:
         try:
             pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
             quoter = w3.eth.contract(address=QUOTER_V2_ADDRESS, abi=QUOTER_V2_ABI)
 
-            # wyciągamy fee z puli (uint24)
-            fee_tier = int(pool.functions.fee().call())
+
+            if pool_fee:
+                fee_tier = int(pool_fee)
+            else:
+                fee_tier = int(pool.functions.fee().call())
 
             token_in  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
             token_out = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))

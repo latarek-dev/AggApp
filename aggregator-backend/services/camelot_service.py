@@ -60,7 +60,7 @@ class CamelotService(BaseDexService):
             print(f"Błąd przy pobieraniu fee z Camelot {pool_address}: {e}")
             return None
 
-    def get_mid_price(self, pool_address, token_from, token_to, token_decimals) -> Optional[Decimal]:
+    def get_mid_price(self, pool_address, token_from, token_to, token_decimals, token_addresses=None) -> Optional[Decimal]:
         """
         Pobiera mid-price z globalState dla Camelot.
         
@@ -69,15 +69,21 @@ class CamelotService(BaseDexService):
             token_from: symbol tokenu wejściowego
             token_to: symbol tokenu wyjściowego
             token_decimals: (dec0, dec1) decimals tokenów
+            token_addresses: (token0, token1) adresy z config (opcjonalne)
             
         Returns:
             Decimal: mid-price (token_to / token_from)
         """
         try:
             pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
-            token0 = pool.functions.token0().call()
+            
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
             dec0, dec1 = token_decimals
-            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0.lower()
+            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0
             
             # Camelot używa globalState zamiast slot0
             global_state = pool.functions.globalState().call()
@@ -88,7 +94,7 @@ class CamelotService(BaseDexService):
             print(f"Błąd mid_price Camelot: {e}")
             return None
 
-    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None) -> Optional[Decimal]:
+    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None, pool_fee=None, pair=None) -> Optional[Decimal]:
         """
         Pobiera dokładny quote z Quoter dla Camelot.
         

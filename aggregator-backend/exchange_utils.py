@@ -4,7 +4,7 @@ from models import TransactionOption
 from token_manager import TokenManager
 from config import w3
 from services import CoinGeckoService
-from pools_config import TOKENS
+from pools_config import TOKENS, get_pool_fee
 from services.calculation_service import slippage_from_mid_and_actual
 
 token_manager = TokenManager(TOKENS)
@@ -106,7 +106,7 @@ async def process_dex_pools(dex_name: str,
         if cached_mid_price is None:
             # Brak w cache - pobierz z blockchain (slot0/globalState)
             print(f"Brak mid-price w cache dla {pool_name}, pobieram z blockchain...")
-            mid_price = dex_service.get_mid_price(pool_address, token_from, token_to, token_decimals)
+            mid_price = dex_service.get_mid_price(pool_address, token_from, token_to, token_decimals, token_addresses)
             
             if mid_price and mid_price > 0:
                 # Zapisz w cache
@@ -125,7 +125,13 @@ async def process_dex_pools(dex_name: str,
             continue
 
         # 2. Pobierz dokładny quote z Quoter (już z fee)
-        amount_out = dex_service.quote_exact_in(pool_address, token_from, token_to, Decimal(amount), token_decimals, token_addresses)
+
+        pool_fee = get_pool_fee(dex_name, pair)
+        
+        amount_out = dex_service.quote_exact_in(
+            pool_address, token_from, token_to, Decimal(amount), 
+            token_decimals, token_addresses, pool_fee, pair
+        )
         if amount_out is None or amount_out == 0:
             print(f"Brak quote lub amount_out=0 dla {pool_address}, pomijam.")
             continue

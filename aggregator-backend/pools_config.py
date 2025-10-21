@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 TOKENS = {
     "USDC": {
@@ -131,6 +131,22 @@ def get_all_supported_tokens() -> List[str]:
 def get_all_dex_names() -> List[str]:
     """Zwraca listę wszystkich obsługiwanych DEX-ów."""
     return list(DEX_CONFIGS.keys())
+
+def get_pool_fee(dex_name: str, pair: str) -> Optional[int]:
+    """
+    Pobiera fee tier z config dla danej puli.
+    
+    Args:
+        dex_name: Nazwa DEX-a np. "Uniswap"
+        pair: Nazwa pary np. "USDC/ETH"
+        
+    Returns:
+        int: Fee tier (np. 500 dla 0.05%) lub None jeśli brak
+    """
+    pool_config = get_pool_config(dex_name, pair)
+    if pool_config:
+        return pool_config.get("fee")
+    return None
 
 # Backward compatibility - stary kod używa tych aliasów
 UNISWAP_POOLS = DEX_CONFIGS["Uniswap"]["pools"]

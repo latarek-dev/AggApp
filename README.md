@@ -72,8 +72,8 @@ docker compose logs -f frontend
 
 ```
 AggApp/
-│  .env.example         # szablon zmiennych środowiskowych
-│  docker-compose.yml   # definicja usług Docker
+│  .env.example
+│  docker-compose.yml
 │
 ├─ aggregator-backend/
 │   ├─ Dockerfile

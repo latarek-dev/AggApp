@@ -68,7 +68,7 @@ docker compose logs -f frontend
 
 ---
 
-## Struktura repozytorium
+## Struktura projektu
 
 ```
 AggApp/

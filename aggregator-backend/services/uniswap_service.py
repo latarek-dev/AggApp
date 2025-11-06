@@ -26,11 +26,11 @@ quoter_abi = [
 ]
 
 class UniswapService(BaseDexService):
-    """Serwis pobierający ceny z Uniswap V3."""
+    """Uniswap V3 - mid-price, quotes, liquidity."""
     abi = uniswap_abi
 
     def get_dex_fee_percent(self, pool_address: str) -> Optional[Decimal]:
-        """Zwraca fee z puli Uniswap V3 w formacie dziesiętnym (np. 0.003 dla 0.3%)."""
+        """Fee puli (np. 0.003 dla 0.3%)."""
         try:
             pool_contract = w3.eth.contract(address=pool_address, abi=self.abi)
             fee_micro = pool_contract.functions.fee().call()
@@ -40,19 +40,7 @@ class UniswapService(BaseDexService):
             return None
 
     def get_mid_price(self, pool_address, token_from, token_to, token_decimals, token_addresses=None) -> Optional[Decimal]:
-        """
-        Pobiera mid-price z slot0 dla Uniswap V3.
-        
-        Args:
-            pool_address: adres puli
-            token_from: symbol tokenu wejściowego
-            token_to: symbol tokenu wyjściowego
-            token_decimals: (dec0, dec1) decimals tokenów
-            token_addresses: (token0, token1) adresy z config (opcjonalne)
-            
-        Returns:
-            Decimal: mid-price (token_to / token_from)
-        """
+        """Mid-price z slot0.sqrtPriceX96."""
         try:
             pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
             
@@ -70,22 +58,7 @@ class UniswapService(BaseDexService):
             return None
 
     def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None, pool_fee=None, pair=None) -> Optional[Decimal]:
-        """
-        Pobiera dokładny quote z Quoter V3 dla Uniswap.
-        
-        Args:
-            pool_address: adres puli
-            token_from: symbol tokenu wejściowego
-            token_to: symbol tokenu wyjściowego
-            amount_in: ilość tokenów wejściowych
-            token_decimals: (dec0, dec1) decimals tokenów
-            token_addresses: (token0, token1) adresy z config (opcjonalne)
-            pool_fee: fee tier z config (opcjonalne, eliminuje blockchain call)
-            pair: nazwa pary (opcjonalne, do fallback)
-            
-        Returns:
-            Decimal: amount_out (już z fee)
-        """
+        """Quote z Quoter V3 (amount_out już uwzględnia fee)."""
         try:
             pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
             quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)

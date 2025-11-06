@@ -42,9 +42,9 @@ const SettingsPanel = ({
                 onChange={(e) => setRefreshInterval(Number(e.target.value))}
                 className="w-full bg-gray-700 border border-gray-600 text-white text-sm rounded-lg px-3 py-2 focus:ring-purple-500 focus:border-purple-500"
               >
-                <option value={10}>10 sekund</option>
-                <option value={30}>30 sekund</option>
                 <option value={60}>60 sekund</option>
+                <option value={120}>2 minuty</option>
+                <option value={300}>5 minut</option>
               </select>
             </div>
           )}

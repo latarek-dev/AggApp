@@ -22,7 +22,7 @@ function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedOfferIndex, setSelectedOfferIndex] = useState(0);
   const [autoRefresh, setAutoRefresh] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(30);
+  const [refreshInterval, setRefreshInterval] = useState(60);
   const [activeTab, setActiveTab] = useState('swap');
   const queryClient = new QueryClient()
 

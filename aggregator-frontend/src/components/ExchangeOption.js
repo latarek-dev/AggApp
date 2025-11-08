@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import PercentageChange from "./PercentageChange";
-import { FaExchangeAlt, FaInfoCircle } from "react-icons/fa";
+import TransactionModal from "./TransactionModal";
+import { FaExchangeAlt, FaInfoCircle, FaSpinner, FaCheckCircle } from "react-icons/fa";
+import { useSwap } from "../hooks/useSwap";
 
 const ExchangeOption = ({ 
   option, 
   tokenFrom, 
-  tokenTo, 
+  tokenTo,
+  amount,
   index, 
   isSelected, 
   onSelect, 
   isBest = false,
   showTooltips = false 
 }) => {
+  const { executeSwap, swapState, isConnected, isPending, isSuccess, txHash, resetSwap } = useSwap();
+  const [showModal, setShowModal] = useState(false);
   const formatRoute = (option) => {
     if (!option || !option.dex_fee) return "Unknown · 0%";
     const feePercent = (option.dex_fee * 100).toFixed(2);
@@ -64,21 +69,68 @@ const ExchangeOption = ({
     }
   };
 
+  const handleSwapClick = async () => {
+    if (!isSelected) {
+      onSelect();
+      return;
+    }
+    
+    if (!isConnected) {
+      alert('Połącz portfel aby wykonać wymianę');
+      return;
+    }
+
+    setShowModal(true);
+    await executeSwap(option, tokenFrom, tokenTo, amount);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    resetSwap();
+  };
+
   const getActionButton = () => {
-    const baseClasses = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200";
+    const baseClasses = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center space-x-2";
+    
+    if (isPending || swapState.status === 'approving' || swapState.status === 'swapping' || swapState.status === 'confirming') {
+      return (
+        <button disabled className={`${baseClasses} bg-gray-600 text-gray-300 cursor-not-allowed`}>
+          <FaSpinner className="animate-spin" size={12} />
+          <span>{swapState.step || 'Przetwarzanie...'}</span>
+        </button>
+      );
+    }
+
+    if (isSuccess || swapState.status === 'success') {
+      return (
+        <button disabled className={`${baseClasses} bg-green-600 text-white cursor-not-allowed`}>
+          <FaCheckCircle size={12} />
+          <span>Wykonano!</span>
+        </button>
+      );
+    }
+
     const selectedClasses = isBest
-      ? "bg-gradient-to-r from-purple-500 to-blue-600 text-white"
-      : "bg-gradient-to-r from-purple-500 to-blue-600 text-white";
+      ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+      : "bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:shadow-lg";
     const unselectedClasses = "bg-gray-700 text-gray-300 hover:bg-gray-600";
 
     return (
       <button
-        onClick={onSelect}
+        onClick={handleSwapClick}
+        disabled={!isConnected && isSelected}
         className={`${baseClasses} ${
           isSelected ? selectedClasses : unselectedClasses
-        }`}
+        } ${!isConnected && isSelected ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        {isSelected ? 'Wymień' : 'Wybierz'}
+        {isSelected ? (
+          <>
+            <FaExchangeAlt size={12} />
+            <span>Wymień</span>
+          </>
+        ) : (
+          <span>Wybierz</span>
+        )}
       </button>
     );
   };
@@ -127,9 +179,16 @@ const ExchangeOption = ({
   };
 
   return (
-    <div className={`bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl rounded-lg shadow-lg relative transition-all duration-300 ${
-      isBest ? 'shadow-lg' : 'shadow-md hover:shadow-lg transform hover:scale-[1.002]'
-    } ${getBorderClasses()}`}>
+    <>
+      <TransactionModal 
+        swapState={swapState}
+        txHash={txHash}
+        onClose={handleCloseModal}
+      />
+      
+      <div className={`bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl rounded-lg shadow-lg relative transition-all duration-300 ${
+        isBest ? 'shadow-lg' : 'shadow-md hover:shadow-lg transform hover:scale-[1.002]'
+      } ${getBorderClasses()}`}>
       
       {/* Main Content - Horizontal Layout */}
       <div className="flex items-center justify-between p-3">
@@ -192,6 +251,7 @@ const ExchangeOption = ({
         </div>
       </div>
     </div>
+    </>
   );
 };
 

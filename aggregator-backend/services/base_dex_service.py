@@ -4,17 +4,30 @@ from config import erc20_abi, w3
 from token_manager import TokenManager
 from web3 import Web3
 from pools_config import TOKENS
+import time
 
 token_manager = TokenManager(TOKENS)
 
+_gas_price_cache = {'value': None, 'timestamp': 0}
+
+def get_cached_gas_price():
+    """Gas price z cache (60s TTL) lub blockchain."""
+    current_time = time.time()
+    
+    if _gas_price_cache['value'] is not None and _gas_price_cache['timestamp'] + 60 > current_time:
+        return _gas_price_cache['value']
+    
+    gas_price = w3.eth.gas_price
+    _gas_price_cache['value'] = gas_price
+    _gas_price_cache['timestamp'] = current_time
+    
+    return gas_price
+
 class BaseDexService:
-    """
-    Bazowa klasa z wspólnymi metodami dla serwisów DEX.
-    Eliminuje duplikację kodu między UniswapService, SushiSwapService i CamelotService.
-    """
+    """Bazowa klasa dla UniswapService, SushiSwapService, CamelotService."""
     
     def get_liquidity(self, pool_address: str, token_addresses, token_decimals: Tuple[int, int], prices: dict) -> Optional[Tuple[Decimal, Decimal]]:
-        """Pobiera płynność z puli DEX."""
+        """Płynność puli (balanceOf dla token0 i token1)."""
         try:
             token0_address, token1_address = token_addresses
             decimals0, decimals1 = token_decimals
@@ -35,7 +48,7 @@ class BaseDexService:
             return None
 
     def get_gas_cost_usd(self, dex_fee: Optional[Decimal], liquidity: float, eth_price: Decimal) -> Optional[Decimal]:
-        """Szacuje koszt gazu w USD na podstawie opłaty puli i płynności."""
+        """Koszt gazu w USD (gas_used zależy od fee tier i płynności)."""
         try:
             if dex_fee is None:
                 gas_used = 140_000
@@ -53,7 +66,7 @@ class BaseDexService:
             if liquidity < 100_000:
                 gas_used += 15_000
 
-            gas_price_wei = w3.eth.gas_price
+            gas_price_wei = get_cached_gas_price()
             print("gas price wei", gas_price_wei)
             gas_price_eth = Web3.from_wei(gas_price_wei, 'ether')
             
@@ -67,9 +80,8 @@ class BaseDexService:
             return None
 
     def get_transaction_cost(self, pool_address: str, token_from_address: str, liquidity: float, eth_price: Decimal) -> Tuple[Optional[Decimal], Optional[Decimal]]:
-        """Zwraca podsumowanie kosztów transakcji: fee + gaz w USD."""
+        """Zwraca (dex_fee, gas_cost_usd)."""
         try:
-            # Standardowe API dla Uniswap/SushiSwap
             dex_fee = self.get_dex_fee_percent(pool_address)
             gas_cost = self.get_gas_cost_usd(dex_fee, liquidity, eth_price=eth_price)
 

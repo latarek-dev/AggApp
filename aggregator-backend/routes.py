@@ -1,14 +1,14 @@
 from decimal import Decimal
+import asyncio
 from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest, TransactionOption, TransactionOptionRaw, FrontendTransactionOption
-from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS
+from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKENS, DEX_CONFIGS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
 from exchange_utils import process_dex_pools, process_prices
 from decision_engine import rank_options
 
 exchange_router = APIRouter()
 
-# Dependency injection: Używamy CoinGeckoService oraz serwisów DEX
 def get_services(redis_cache_service: RedisCacheService = Depends(),
                  coin_gecko_service: CoinGeckoService = Depends(), 
                  uniswap_service: UniswapService = Depends(),
@@ -34,9 +34,20 @@ async def exchange(request: ExchangeRequest,
         ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
-    for dex_name, pools, dex_service in dexes:
-        dex_options = await process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
-        all_options.extend(dex_options)
+    # Równoległe przetwarzanie DEXów
+    print(f"Przetwarzam {len(dexes)} DEXy równolegle...")
+    tasks = [
+        process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
+        for dex_name, pools, dex_service in dexes
+    ]
+    
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    for i, result in enumerate(results):
+        if isinstance(result, Exception):
+            print(f"Błąd w DEX {dexes[i][0]}: {result}")
+        else:
+            all_options.extend(result)
 
     print(all_options)
 
@@ -50,22 +61,15 @@ async def exchange(request: ExchangeRequest,
         gas_cost=o.gas_cost
     ) for o in all_options]
 
-    # stwórz mapę do pełnych danych
-    full_option_map = {
-        (o.dex, o.pool): o
-        for o in all_options
-    }
-
+    full_option_map = {(o.dex, o.pool): o for o in all_options}
     sorted_raw = rank_options(raw_options)
 
     print(f"Opcje wymiany po sortowaniu: {sorted_raw}")
 
-    # mapujemy na FrontendTransactionOption z wszystkimi danymi
     frontend_sorted = []
     for raw in sorted_raw:
         full = full_option_map.get((raw.dex, raw.pool))
         if full:
-            # Oblicz percentage_change
             percentage_change = 0.0
             if full.value_from_usd > 0 and full.value_to_usd > 0:
                 percentage_change = ((full.value_to_usd - full.value_from_usd) / full.value_from_usd) * 100
@@ -90,3 +94,12 @@ async def exchange(request: ExchangeRequest,
         }
     else:
         raise HTTPException(status_code=404, detail="No exchange options available.")
+
+@exchange_router.get("/config")
+async def get_config():
+    """Konfiguracja kontraktów dla frontendu."""
+    return {
+        "tokens": {symbol: data['address'] for symbol, data in TOKENS.items()},
+        "decimals": {symbol: data['decimals'] for symbol, data in TOKENS.items()},
+        "routers": {dex: config['contracts']['router'] for dex, config in DEX_CONFIGS.items()}
+    }

@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { config } from './config/wagmi'
 import Header from "./components/Header";
 import ExchangeForm from "./components/ExchangeForm";
 import Results from "./components/Results";
@@ -8,14 +11,9 @@ import History from "./components/History";
 import About from "./components/About";
 
 function App() {
-  // --- bezpieczne pobranie bazy API ---
-  // U góry App.js (po importach)
   const API_BASE =
-  // jeśli kiedyś zechcesz wstrzykiwać runtime-env przez <script>window.__ENV__...</script>
   (typeof window !== "undefined" && window.__ENV__ && window.__ENV__.API_BASE) ||
-  // Create React App: odczyt z build-time env
   process.env.REACT_APP_API_BASE ||
-  // domyślnie użyj ścieżki przez Nginx
   "/api";
 
   const [results, setResults] = useState([]);
@@ -24,8 +22,9 @@ function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedOfferIndex, setSelectedOfferIndex] = useState(0);
   const [autoRefresh, setAutoRefresh] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(30);
+  const [refreshInterval, setRefreshInterval] = useState(60);
   const [activeTab, setActiveTab] = useState('swap');
+  const queryClient = new QueryClient()
 
   const handleExchange = async (data) => {
     setIsLoading(true);
@@ -78,7 +77,6 @@ function App() {
     setSelectedOfferIndex(index);
   };
 
-  // Auto-refresh logic
   useEffect(() => {
     let intervalId;
     
@@ -111,6 +109,7 @@ function App() {
                 options={results} 
                 tokenFrom={tokens.tokenFrom} 
                 tokenTo={tokens.tokenTo}
+                amount={tokens.amount}
                 isLoading={isLoading}
                 isRefreshing={isRefreshing}
                 selectedOfferIndex={selectedOfferIndex}
@@ -141,13 +140,17 @@ function App() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <main className="container mx-auto px-4 py-6 max-w-7xl">
-        {renderContent()}
-      </main>
-    </div>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen">
+          <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+          
+          <main className="container mx-auto px-4 py-6 max-w-7xl">
+            {renderContent()}
+          </main>
+        </div>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 

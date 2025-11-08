@@ -20,7 +20,6 @@ Projekt składa się z:
 
 ### 1. Wymagania
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Git  
 
 ### 2. Klonowanie repozytorium
 ```bash
@@ -69,12 +68,12 @@ docker compose logs -f frontend
 
 ---
 
-## Struktura repozytorium
+## Struktura projektu
 
 ```
 AggApp/
-│  .env.example         # szablon zmiennych środowiskowych
-│  docker-compose.yml   # definicja usług Docker
+│  .env.example
+│  docker-compose.yml
 │
 ├─ aggregator-backend/
 │   ├─ Dockerfile

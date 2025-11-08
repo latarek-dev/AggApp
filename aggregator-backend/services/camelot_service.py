@@ -29,24 +29,21 @@ quoter_abi = [
 ]
 
 class CamelotService(BaseDexService):
-    """Serwis pobierający ceny z puli Camelot."""
+    """Camelot V3 - dynamiczne fee z globalState."""
     abi = camelot_abi
 
     def get_dex_fee_percent(self, pool_address: str, token_from_address: str) -> Optional[Decimal]:
-        """Zwraca fee z puli Camelot V3 jako liczba dziesiętna."""
+        """Fee z globalState (feeZto lub feeOtz w zależności od kierunku)."""
         try:
             pool_contract = w3.eth.contract(address=pool_address, abi=self.abi)
 
-            # Pobierz token0 i token1 z kontraktu
             token0 = pool_contract.functions.token0().call()
             token1 = pool_contract.functions.token1().call()
 
-            # Pobierz globalState
             global_state = pool_contract.functions.globalState().call()
             print("global_state", global_state)
             _, _, feeZto, feeOtz, *_ = global_state
 
-            # Wybierz odpowiednią opłatę
             if token_from_address.lower() == token0.lower():
                 fee_basis_points = feeZto
             elif token_from_address.lower() == token1.lower():
@@ -60,48 +57,29 @@ class CamelotService(BaseDexService):
             print(f"Błąd przy pobieraniu fee z Camelot {pool_address}: {e}")
             return None
 
-    def get_mid_price(self, pool_address, token_from, token_to, token_decimals) -> Optional[Decimal]:
-        """
-        Pobiera mid-price z globalState dla Camelot.
-        
-        Args:
-            pool_address: adres puli
-            token_from: symbol tokenu wejściowego
-            token_to: symbol tokenu wyjściowego
-            token_decimals: (dec0, dec1) decimals tokenów
-            
-        Returns:
-            Decimal: mid-price (token_to / token_from)
-        """
+    def get_mid_price(self, pool_address, token_from, token_to, token_decimals, token_addresses=None) -> Optional[Decimal]:
+        """Mid-price z globalState[0] (sqrtPriceX96)."""
         try:
             pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
-            token0 = pool.functions.token0().call()
-            dec0, dec1 = token_decimals
-            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0.lower()
             
-            # Camelot używa globalState zamiast slot0
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
+            dec0, dec1 = token_decimals
+            is0_in = token_manager.get_address_by_symbol(token_from).lower() == token0
+            
             global_state = pool.functions.globalState().call()
-            sqrt_x96 = global_state[0]  # sqrtPriceX96 jest pierwszym elementem
+            sqrt_x96 = global_state[0]
             
             return mid_price_from_univ3_sqrt(sqrt_x96, dec0, dec1, is0_in)
         except Exception as e:
             print(f"Błąd mid_price Camelot: {e}")
             return None
 
-    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals) -> Optional[Decimal]:
-        """
-        Pobiera dokładny quote z Quoter dla Camelot.
-        
-        Args:
-            pool_address: adres puli
-            token_from: symbol tokenu wejściowego
-            token_to: symbol tokenu wyjściowego
-            amount_in: ilość tokenów wejściowych
-            token_decimals: (dec0, dec1) decimals tokenów
-            
-        Returns:
-            Decimal: amount_out (już z fee)
-        """
+    def quote_exact_in(self, pool_address, token_from, token_to, amount_in, token_decimals, token_addresses=None, pool_fee=None, pair=None) -> Optional[Decimal]:
+        """Quote z Camelot Quoter (zwraca amountOut + feeUsed)."""
         try:
             pool   = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=self.abi)
             quoter = w3.eth.contract(address=QUOTER_ADDRESS, abi=quoter_abi)
@@ -109,18 +87,26 @@ class CamelotService(BaseDexService):
             token_in_addr  = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_from))
             token_out_addr = Web3.to_checksum_address(token_manager.get_address_by_symbol(token_to))
 
-            token0 = pool.functions.token0().call()
+            if token_addresses and len(token_addresses) == 2:
+                token0 = token_addresses[0].lower()
+            else:
+                token0 = pool.functions.token0().call().lower()
+            
             dec0, dec1 = token_decimals
-            is0_in = token_in_addr.lower() == token0.lower()
+            is0_in = token_in_addr.lower() == token0
             dec_in  = dec0 if is0_in else dec1
             dec_out = dec1 if is0_in else dec0
 
             amount_in_wei = int(amount_in * Decimal(10 ** dec_in))
             
+            print(f"Camelot Quoter: token_in={token_from} ({dec_in} dec), amount_in={amount_in_wei}")
+            
             # Camelot Quoter zwraca (amountOut, feeUsed)
             amount_out_wei, _fee_used = quoter.functions.quoteExactInputSingle(
                 token_in_addr, token_out_addr, amount_in_wei, 0
             ).call()
+            
+            print(f"Camelot response: amount_out_wei={amount_out_wei}")
             
             return Decimal(amount_out_wei) / Decimal(10 ** dec_out)
         except Exception as e:

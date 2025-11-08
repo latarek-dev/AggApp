@@ -2,7 +2,7 @@ from decimal import Decimal
 import asyncio
 from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest, TransactionOption, TransactionOptionRaw, FrontendTransactionOption
-from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS
+from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKENS, DEX_CONFIGS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
 from exchange_utils import process_dex_pools, process_prices
 from decision_engine import rank_options
@@ -94,3 +94,12 @@ async def exchange(request: ExchangeRequest,
         }
     else:
         raise HTTPException(status_code=404, detail="No exchange options available.")
+
+@exchange_router.get("/config")
+async def get_config():
+    """Konfiguracja kontraktów dla frontendu."""
+    return {
+        "tokens": {symbol: data['address'] for symbol, data in TOKENS.items()},
+        "decimals": {symbol: data['decimals'] for symbol, data in TOKENS.items()},
+        "routers": {dex: config['contracts']['router'] for dex, config in DEX_CONFIGS.items()}
+    }

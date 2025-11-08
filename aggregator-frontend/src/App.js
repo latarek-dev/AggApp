@@ -109,6 +109,7 @@ function App() {
                 options={results} 
                 tokenFrom={tokens.tokenFrom} 
                 tokenTo={tokens.tokenTo}
+                amount={tokens.amount}
                 isLoading={isLoading}
                 isRefreshing={isRefreshing}
                 selectedOfferIndex={selectedOfferIndex}

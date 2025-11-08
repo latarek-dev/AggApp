@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Select from "react-select";
-import { FaEthereum, FaBitcoin, FaDollarSign, FaRegMoneyBillAlt, FaExchangeAlt } from "react-icons/fa";
+import { FaEthereum, FaBitcoin, FaDollarSign, FaRegMoneyBillAlt, FaExchangeAlt, FaWallet } from "react-icons/fa";
 import { BiTransfer } from "react-icons/bi";
+import { useTokenBalance } from "../hooks/useTokenBalance";
+import { useAccount } from "wagmi";
 
-// Enhanced custom styles for react-select - more compact
 const customStyles = {
   control: (styles, { isFocused }) => ({
     ...styles,
@@ -70,8 +71,10 @@ const ExchangeForm = ({ onSubmit }) => {
     amount: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { isConnected } = useAccount();
+  
+  const { balance: balanceFrom, formatted: formattedFrom, fullAmount: fullAmountFrom, isLoading: isLoadingBalance } = useTokenBalance(formData.token_from);
 
-  // Handle select change
   const handleSelectChange = (selectedOption, actionMeta) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -79,14 +82,21 @@ const ExchangeForm = ({ onSubmit }) => {
     }));
   };
 
-  // Handle input change for amount
   const handleInputChange = (e) => {
     const value = e.target.value;
-    // Allow only numbers and one decimal point
     if (/^\d*\.?\d*$/.test(value) || value === '') {
       setFormData({
         ...formData,
         amount: value,
+      });
+    }
+  };
+
+  const handleMaxClick = () => {
+    if (fullAmountFrom && parseFloat(fullAmountFrom) > 0) {
+      setFormData({
+        ...formData,
+        amount: fullAmountFrom,
       });
     }
   };
@@ -241,9 +251,33 @@ const ExchangeForm = ({ onSubmit }) => {
 
         {/* Amount */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
-            Ilość
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
+              Ilość
+            </label>
+            {isConnected && (
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1 text-xs text-gray-400">
+                  <FaWallet size={10} />
+                  <span>
+                    {isLoadingBalance ? (
+                      <span className="animate-pulse">...</span>
+                    ) : (
+                      <span className="font-mono">{formattedFrom}</span>
+                    )}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleMaxClick}
+                  disabled={isLoadingBalance || !formattedFrom}
+                  className="px-2 py-0.5 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 text-white text-xs font-bold rounded transition-colors"
+                >
+                  MAX
+                </button>
+              </div>
+            )}
+          </div>
           <div className="relative">
             <input
               type="text"

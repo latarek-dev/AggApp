@@ -134,7 +134,6 @@ async def process_dex_pools(dex_name: str,
             print(f"Brak mid-price dla {pool_address}, pomijam.")
             continue
 
-        # Pobranie dokładnego quote z Quoter już z fee
         pool_fee = get_pool_fee(dex_name, pair)
         
         amount_out = dex_service.quote_exact_in(

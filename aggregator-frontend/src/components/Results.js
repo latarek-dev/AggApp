@@ -2,7 +2,7 @@ import ResultItem from "./ResultItem";
 import BestOption from "./BestOption";
 import { FaSearch, FaSpinner, FaSync } from "react-icons/fa";
 
-const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selectedOfferIndex, onSelectOffer }) => {
+const Results = ({ options, tokenFrom, tokenTo, amount, isLoading, isRefreshing, selectedOfferIndex, onSelectOffer }) => {
   if (isLoading) {
     return (
       <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border border-gray-700/50 rounded-lg shadow-lg p-8">
@@ -32,12 +32,10 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
 
   return (
     <div className="space-y-6">
-      {/* Header - Wyśrodkowany tytuł */}
       <div className="text-center">
         <h2 className="text-white text-xl font-bold flex items-center justify-center space-x-2">
           <FaSearch className="text-purple-500" />
           <span>Wyniki wyszukiwania</span>
-          {/* Background Refresh Indicator */}
           {isRefreshing && (
             <div className="flex items-center space-x-2 ml-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -50,7 +48,7 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
         </p>
       </div>
 
-      {/* Best Option with subtle refresh indicator */}
+      {/* Best Option */}
       <div className="relative">
         {isRefreshing && (
           <div className="absolute -top-2 -right-2 z-10">
@@ -63,6 +61,7 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
           option={bestOption}
           tokenFrom={tokenFrom}
           tokenTo={tokenTo}
+          amount={amount}
           isSelected={selectedOfferIndex === 0}
           onSelect={() => onSelectOffer(0)}
         />
@@ -88,6 +87,7 @@ const Results = ({ options, tokenFrom, tokenTo, isLoading, isRefreshing, selecte
                   option={option}
                   tokenFrom={tokenFrom}
                   tokenTo={tokenTo}
+                  amount={amount}
                   index={index}
                   isSelected={selectedOfferIndex === index + 1}
                   onSelect={() => onSelectOffer(index + 1)}

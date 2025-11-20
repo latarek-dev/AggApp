@@ -39,11 +39,9 @@ class RedisService:
                         self._client = None
                         raise
         else:
-            # Sprawdzenie czy połączenie jest aktywne
             try:
                 await self._client.ping()
             except Exception:
-                # Połączenie zostało utracone, odtwarzamy je
                 async with self._lock:
                     try:
                         if self._client:

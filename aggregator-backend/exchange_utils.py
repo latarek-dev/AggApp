@@ -5,8 +5,7 @@ from token_manager import TokenManager
 from config import w3
 from services import CoinGeckoService
 from services.defillama_service import DefiLlamaService
-from pools_config import TOKENS, get_pool_fee
-from services.calculation_service import slippage_from_mid_and_actual
+from pools_config import TOKENS, DEX_CONFIGS, get_pool_fee
 
 token_manager = TokenManager(TOKENS)
 defillama_service = DefiLlamaService(chain="arbitrum")
@@ -146,9 +145,6 @@ async def process_dex_pools(dex_name: str,
 
         print(f"Mid-price: {mid_price}, Amount out: {amount_out}")
 
-        slippage = slippage_from_mid_and_actual(Decimal(amount), mid_price, amount_out)
-        print(f"Slippage: {slippage}")
-
         liquidity = dex_service.get_liquidity(pool_address, token_addresses, token_decimals, prices)
 
         if liquidity is None:
@@ -169,8 +165,24 @@ async def process_dex_pools(dex_name: str,
 
         token_from_address = token_manager.get_address_by_symbol(token_from)
         token_to_address = token_manager.get_address_by_symbol(token_to)
+        
+        token_from_decimals = token_manager.get_decimals_by_symbol(token_from)
+        amount_in_wei = int(Decimal(amount) * (10 ** token_from_decimals))
+        
+        router_address = DEX_CONFIGS[dex_name]['contracts']['router']
+        
+        fee_tier = pool_fee if pool_fee else 500
 
-        dex_fee, gas_cost = dex_service.get_transaction_cost(pool_address, token_from_address, liquidity_usd, eth_price)
+        dex_fee, gas_cost = dex_service.get_transaction_cost(
+            pool_address=pool_address,
+            token_from_address=token_from_address,
+            token_to_address=token_to_address,
+            amount_in_wei=amount_in_wei,
+            fee_tier=fee_tier,
+            router_address=router_address,
+            liquidity=liquidity_usd,
+            eth_price=eth_price
+        )
 
         if dex_fee is None or gas_cost is None:
             print(f"Brak kosztów dla {pool_address}, pomijam.")
@@ -186,7 +198,6 @@ async def process_dex_pools(dex_name: str,
             dex=dex_name,
             pool=pair,
             price=float(mid_price),
-            slippage=float(slippage),
             liquidity=liquidity_usd,
             dex_fee=float(dex_fee),
             gas_cost=float(gas_cost),

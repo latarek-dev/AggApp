@@ -3,35 +3,33 @@ from typing import List
 from models import TransactionOptionRaw
 
 def rank_options(options: List[TransactionOptionRaw]) -> List[TransactionOptionRaw]:
-    """Ranking TOPSIS: amount_to, liquidity, slippage, fee, gas."""
+    """Ranking TOPSIS: amount_to, liquidity, fee, gas."""
     if not options:
         return []
 
     matrix = np.array([
-        [opt.amount_to, opt.slippage, opt.liquidity, opt.dex_fee, opt.gas_cost]
+        [opt.amount_to, opt.liquidity, opt.dex_fee, opt.gas_cost]
         for opt in options
     ])
 
     epsilon = 1e-10
     norm_matrix = matrix / (np.sqrt((matrix ** 2).sum(axis=0)) + epsilon)
 
-    weights = np.array([0.35, 0.2, 0.2, 0.15, 0.1])
+    weights = np.array([0.45, 0.25, 0.20, 0.10])
     weighted_matrix = norm_matrix * weights
 
     ideal_best = np.array([
         np.max(weighted_matrix[:, 0]),
-        np.min(weighted_matrix[:, 1]),
-        np.max(weighted_matrix[:, 2]),
-        np.min(weighted_matrix[:, 3]),
-        np.min(weighted_matrix[:, 4])
+        np.max(weighted_matrix[:, 1]),
+        np.min(weighted_matrix[:, 2]),
+        np.min(weighted_matrix[:, 3])
     ])
 
     ideal_worst = np.array([
         np.min(weighted_matrix[:, 0]),
-        np.max(weighted_matrix[:, 1]),
-        np.min(weighted_matrix[:, 2]),
-        np.max(weighted_matrix[:, 3]),
-        np.max(weighted_matrix[:, 4])
+        np.min(weighted_matrix[:, 1]),
+        np.max(weighted_matrix[:, 2]),
+        np.max(weighted_matrix[:, 3])
     ])
 
     dist_best = np.linalg.norm(weighted_matrix - ideal_best, axis=1)

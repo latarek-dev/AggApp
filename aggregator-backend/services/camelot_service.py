@@ -113,18 +113,115 @@ class CamelotService(BaseDexService):
             print(f"Błąd quote_exact_in Camelot: {e}")
             return None
 
-    def get_transaction_cost(self, pool_address: str, token_from_address: str, liquidity: float, eth_price: Decimal) -> Tuple[Optional[Decimal], Optional[Decimal]]:
-        """Zwraca podsumowanie kosztów transakcji: fee + gaz w USD."""
+    def get_transaction_cost(
+        self,
+        pool_address: str,
+        token_from_address: str,
+        token_to_address: str,
+        amount_in_wei: int,
+        fee_tier: int,
+        router_address: str,
+        liquidity: float,
+        eth_price: Decimal
+    ) -> Tuple[Optional[Decimal], Optional[Decimal]]:
+        """Zwraca (dex_fee, gas_cost_usd) używając eth_estimateGas."""
         try:
-            # Camelot wymaga token_from_address dla get_dex_fee_percent
+            # Camelot ma dynamiczne fee zależne od kierunku
             dex_fee = self.get_dex_fee_percent(pool_address, token_from_address)
-            gas_cost = self.get_gas_cost_usd(dex_fee, liquidity, eth_price=eth_price)
+            
+            if dex_fee is None:
+                return None, None
+            
+            gas_cost = self.get_gas_cost_usd(
+                token_in_address=token_from_address,
+                token_out_address=token_to_address,
+                amount_in_wei=amount_in_wei,
+                fee_tier=fee_tier,
+                router_address=router_address,
+                eth_price=eth_price
+            )
 
-            if dex_fee is None or gas_cost is None:
+            if gas_cost is None:
                 return None, None
 
             return dex_fee, gas_cost
 
         except Exception as e:
-            print(f"Błąd przy tworzeniu podsumowania kosztów Camelot: {e}")
+            print(f"Błąd przy obliczaniu kosztów transakcji Camelot: {e}")
             return None, None
+    
+    def estimate_gas_for_swap(
+        self,
+        token_in_address: str,
+        token_out_address: str,
+        amount_in_wei: int,
+        fee_tier: int,
+        router_address: str,
+        user_address: str = "0x0000000000000000000000000000000000000001"
+    ) -> int:
+        """Estymuje gas dla Camelot."""
+        try:
+            import time
+            deadline = int(time.time()) + 1200
+            
+            # Camelot nie używa fee tier w parametrach swap
+            swap_params = {
+                'tokenIn': Web3.to_checksum_address(token_in_address),
+                'tokenOut': Web3.to_checksum_address(token_out_address),
+                'recipient': user_address,
+                'deadline': deadline,
+                'amountIn': amount_in_wei,
+                'amountOutMinimum': 0,
+                'limitSqrtPrice': 0
+            }
+            
+            router_abi = self._get_router_abi()
+            router_contract = w3.eth.contract(address=Web3.to_checksum_address(router_address), abi=router_abi)
+            
+            tx_data = router_contract.encode_abi('exactInputSingle', args=[swap_params])
+            
+            weth_address = TOKENS['ETH']['address'].lower()
+            tx_value = amount_in_wei if token_in_address.lower() == weth_address else 0
+            
+            gas_estimate = w3.eth.estimate_gas({
+                'from': user_address,
+                'to': Web3.to_checksum_address(router_address),
+                'data': tx_data,
+                'value': tx_value
+            })
+            
+            gas_with_buffer = int(gas_estimate * 1.05)
+            
+            print(f"Gas estimate dla Camelot: {gas_estimate} (+5% = {gas_with_buffer})")
+            return gas_with_buffer
+            
+        except Exception as e:
+            print(f"Błąd estymacji gas dla Camelot: {e}")
+            return 155_000
+    
+    def _get_router_abi(self) -> list:
+        """Camelot używa Algebra router."""
+        return [
+            {
+                "inputs": [
+                    {
+                        "components": [
+                            {"internalType": "address", "name": "tokenIn", "type": "address"},
+                            {"internalType": "address", "name": "tokenOut", "type": "address"},
+                            {"internalType": "address", "name": "recipient", "type": "address"},
+                            {"internalType": "uint256", "name": "deadline", "type": "uint256"},
+                            {"internalType": "uint256", "name": "amountIn", "type": "uint256"},
+                            {"internalType": "uint256", "name": "amountOutMinimum", "type": "uint256"},
+                            {"internalType": "uint160", "name": "limitSqrtPrice", "type": "uint160"}
+                        ],
+                        "internalType": "struct IAlgebraSwapRouter.ExactInputSingleParams",
+                        "name": "params",
+                        "type": "tuple"
+                    }
+                ],
+                "name": "exactInputSingle",
+                "outputs": [{"internalType": "uint256", "name": "amountOut", "type": "uint256"}],
+                "stateMutability": "payable",
+                "type": "function"
+            }
+        ]

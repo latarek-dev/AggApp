@@ -3,7 +3,6 @@ import json
 import os
 from decimal import getcontext
 
-# Ustawienie precyzji dla obliczeń dziesiętnych
 getcontext().prec = 50
 
 RPC_URL = os.getenv("RPC_URL", "https://arb1.arbitrum.io/rpc")

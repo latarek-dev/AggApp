@@ -34,7 +34,6 @@ async def exchange(request: ExchangeRequest,
         ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
-    # Równoległe przetwarzanie DEXów
     print(f"Przetwarzam {len(dexes)} DEXy równolegle...")
     tasks = [
         process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
@@ -55,7 +54,6 @@ async def exchange(request: ExchangeRequest,
         dex=o.dex,
         pool=o.pool,
         amount_to=o.amount_to,
-        slippage=o.slippage,
         liquidity=o.liquidity,
         dex_fee=o.dex_fee,
         gas_cost=o.gas_cost

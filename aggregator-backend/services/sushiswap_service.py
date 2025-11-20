@@ -103,12 +103,11 @@ class SushiswapService(BaseDexService):
                 "tokenOut": token_out,
                 "amountIn": amount_in_wei,
                 "fee": fee_tier,
-                "sqrtPriceLimitX96": 0,  # bez limitu
+                "sqrtPriceLimitX96": 0,
             }
 
             print(f"SushiSwap Quoter: token_in={token_from} ({dec_in} dec), amount_in={amount_in_wei}")
 
-            # Zwraca krotkę; bierzemy pierwszy element (amountOut)
             amount_out_wei, _, _, _ = quoter.functions.quoteExactInputSingle(params).call()
             
             print(f"SushiSwap response: amount_out_wei={amount_out_wei}")

@@ -6,10 +6,7 @@ from config import w3
 
 class TokenManager:
     def __init__(self, tokens_data: dict):
-        """
-        Inicjalizuje TokenManager z danymi o tokenach.
-        tokens_data: dict - słownik danych o tokenach, np. z pliku konfiguracyjnego.
-        """
+        """Inicjalizuje TokenManager z danymi o tokenach."""
         self.tokens = tokens_data
         self.tokens_by_address = {v["address"].lower(): v for k, v in self.tokens.items()}
 
@@ -18,13 +15,20 @@ class TokenManager:
         if token:
             return token["address"].lower()
         return None
+    
+    def get_decimals_by_symbol(self, symbol: str) -> int:
+        """Zwraca decimals dla tokena na podstawie symbolu"""
+        token = self.tokens.get(symbol.upper())
+        if token:
+            return token["decimals"]
+        return 18
 
     def get_token_by_address(self, address: str):
         """Zwraca dane tokena na podstawie adresu"""
         return self.tokens_by_address.get(address.lower())
 
     def get_decimals_for_pool(self, token_addresses: list) -> Tuple[int, int]:
-        """Zwraca decimalsy dla pary tokenów"""
+        """Zwraca decimals dla pary tokenów"""
         token0_address, token1_address = token_addresses
         token0 = self.get_token_by_address(token0_address)
         token1 = self.get_token_by_address(token1_address)

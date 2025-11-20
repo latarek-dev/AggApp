@@ -3,6 +3,7 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchCh
 import { parseUnits, encodeFunctionData } from 'viem';
 import { arbitrum } from 'wagmi/chains';
 import { ERC20_ABI, getRouterABI, getContractsConfig } from '../config/contracts';
+import { saveSwapToHistory } from '../utils/historyStorage';
 
 export const useSwap = () => {
   const { address, isConnected, chain } = useAccount();
@@ -11,6 +12,7 @@ export const useSwap = () => {
   const { switchChain } = useSwitchChain();
   
   const [contractsConfig, setContractsConfig] = useState(null);
+  const [currentSwapData, setCurrentSwapData] = useState(null);
   const [swapState, setSwapState] = useState({
     status: 'idle',
     txHash: null,
@@ -32,13 +34,29 @@ export const useSwap = () => {
       }));
     }
     
-    if (hash && isConfirmed) {
+    if (hash && isConfirmed && currentSwapData) {
+      // Transakcja potwierdzona - zapisz do historii
+      saveSwapToHistory({
+        txHash: hash,
+        tokenFrom: currentSwapData.tokenFrom,
+        tokenTo: currentSwapData.tokenTo,
+        amountFrom: currentSwapData.amount,
+        amountTo: currentSwapData.option.amount_to,
+        valueUSD: currentSwapData.option.value_from_usd,
+        dex: currentSwapData.option.dex,
+        fee: currentSwapData.option.dex_fee,
+        gasUsed: currentSwapData.option.gas_cost,
+        percentageChange: currentSwapData.option.percentage_change
+      });
+      
       setSwapState(prev => ({ 
         ...prev, 
         status: 'success', 
         step: 'Transakcja potwierdzona!', 
         txHash: hash 
       }));
+      
+      setCurrentSwapData(null);
     }
 
     if (writeError) {
@@ -47,8 +65,9 @@ export const useSwap = () => {
         status: 'error', 
         error: writeError.message || 'Błąd transakcji' 
       }));
+      setCurrentSwapData(null);
     }
-  }, [hash, isConfirming, isConfirmed, writeError]);
+  }, [hash, isConfirming, isConfirmed, writeError, currentSwapData]);
 
   const checkAllowance = async (tokenAddress, routerAddress, amountNeeded) => {
     try {
@@ -109,6 +128,8 @@ export const useSwap = () => {
       setSwapState({ status: 'error', error: 'Konfiguracja nie załadowana', step: null, txHash: null });
       return;
     }
+
+    setCurrentSwapData({ option, tokenFrom, tokenTo, amount });
 
     try {
       const dexName = option.dex;

@@ -7,6 +7,9 @@ Na projekt składa się:
 - **frontend**,
 - uruchamiane razem przez **Docker Compose**.  
 
+<img width="1920" height="912" alt="Agregator-Wymiany-Tokenów-11-23-2025_11_59_PM" src="https://github.com/user-attachments/assets/4c0d1574-802d-4395-9ef0-338f5a32ebda" />
+<img width="1920" height="912" alt="Agregator-Wymiany-Tokenów-11-23-2025_11_59_PM (1)" src="https://github.com/user-attachments/assets/aec56430-5524-4516-91a7-5f64bf74d313" />
+
 ---
 
 ## Technologie

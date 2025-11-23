@@ -41,7 +41,6 @@ class CamelotService(BaseDexService):
             token1 = pool_contract.functions.token1().call()
 
             global_state = pool_contract.functions.globalState().call()
-            print("global_state", global_state)
             _, _, feeZto, feeOtz, *_ = global_state
 
             if token_from_address.lower() == token0.lower():

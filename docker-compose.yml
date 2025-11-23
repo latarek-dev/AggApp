@@ -26,7 +26,7 @@ services:
     container_name: agg-redis
     command: ["redis-server", "--requirepass", "redispw", "--save", "", "--appendonly", "no"]
     ports:
-      - "6379:6379"   # wystawiamy na hosta — przydatne do debugowania
+      - "6379:6379"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-a", "redispw", "PING"]
@@ -38,11 +38,10 @@ services:
     build:
       context: ./aggregator-frontend
       dockerfile: Dockerfile
-      # Uwaga: tu możesz nadpisać PUBLIC BASE jeśli kiedyś zmienisz ścieżkę proxy
       args:
         - VITE_API_PUBLIC_BASE=/api
     ports:
-      - "8080:80"        # frontend dostępny na http://localhost:8080
+      - "8080:80"
     depends_on:
       - api
     restart: unless-stopped

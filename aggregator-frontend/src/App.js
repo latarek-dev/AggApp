@@ -36,6 +36,13 @@ function App() {
         body: JSON.stringify(data),
       });
       
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Błąd API:", response.status, errorText);
+        setResults([]);
+        return;
+      }
+      
       const result = await response.json();
       setResults(result.options || []);
     } catch (err) {
@@ -61,6 +68,12 @@ function App() {
           amount: tokens.amount
         }),
       });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Błąd odświeżania:", response.status, errorText);
+        return;
+      }
       
       const result = await response.json();
       setResults(result.options || []);

@@ -94,8 +94,6 @@ async def process_dex_pools(dex_name: str,
 
         pool_address = data.get("address")
         
-        print(pair)
-        
         token_addresses = token_manager.get_pool_addresses(pair)
         
         if not token_addresses or len(token_addresses) != 2:
@@ -108,10 +106,6 @@ async def process_dex_pools(dex_name: str,
 
         prices, eth_price = await process_prices(coin_gecko_service, token_addresses, redis_cache_service, eth_address)
         pool_name = f"{dex_name.lower()}_{pair}"
-
-        print("token_from:", token_from)
-        print("tokens:", tokens)
-        print("amount:", amount)
 
         cached_mid_price = await redis_cache_service.get_cached_price(pool_name)
         

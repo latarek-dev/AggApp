@@ -8,14 +8,14 @@ def rank_options(options: List[TransactionOptionRaw]) -> List[TransactionOptionR
         return []
 
     matrix = np.array([
-        [opt.amount_to, opt.liquidity, opt.dex_fee, opt.gas_cost]
+        [opt.amount_to, np.log1p(opt.liquidity), opt.dex_fee, opt.gas_cost]
         for opt in options
     ])
 
     epsilon = 1e-10
     norm_matrix = matrix / (np.sqrt((matrix ** 2).sum(axis=0)) + epsilon)
 
-    weights = np.array([0.45, 0.25, 0.20, 0.10])
+    weights = np.array([0.7, 0.2, 0.08, 0.02])
     weighted_matrix = norm_matrix * weights
 
     ideal_best = np.array([
@@ -39,9 +39,5 @@ def rank_options(options: List[TransactionOptionRaw]) -> List[TransactionOptionR
 
     ranked_options = [(score, option) for score, option in zip(scores, options)]
     ranked_options.sort(reverse=True, key=lambda x: x[0])
-
-    print("Opcje wymiany wg TOPSIS:")
-    for idx, (score, opt) in enumerate(ranked_options):
-        print(f"{idx}: score={score:.4f}, {opt}")
 
     return [opt for _, opt in ranked_options]

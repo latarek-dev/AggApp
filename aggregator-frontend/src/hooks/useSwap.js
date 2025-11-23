@@ -146,7 +146,6 @@ export const useSwap = () => {
       
       const amountInWei = parseUnits(amount.toString(), decimalsIn);
       
-      // Slippage 0.5%
       const amountOutMinimum = parseUnits((option.amount_to * 0.995).toFixed(decimalsOut), decimalsOut);
       
       const deadline = Math.floor(Date.now() / 1000) + 1200;

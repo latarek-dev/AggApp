@@ -155,8 +155,8 @@ const ExchangeOption = ({
                 <div className="text-xs text-gray-300">
                   <div className="font-semibold text-white mb-1">{item.label.replace(':', '')}</div>
                   <div>
-                    {item.label === "Liquidity:" && "Całkowita wartość tokenów w puli (wyższa = lepsza)"}
-                    {item.label === "Gas:" && "Szacowany koszt transakcji na blockchain"}
+                    {item.label === "Płynność:" && "Całkowita wartość tokenów w puli (wyższa = lepsza)"}
+                    {item.label === "Gaz:" && "Szacowany koszt transakcji na blockchain"}
                   </div>
                 </div>
               </div>

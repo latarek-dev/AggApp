@@ -15,7 +15,7 @@ __pycache__/
 env/
 venv/
 ENV/
-*.env          # prawdziwy plik z secretami
+*.env
 .env
 *.sqlite3
 
@@ -45,12 +45,11 @@ Thumbs.db
 
 # -------------------------
 # Logi
-# -------------------------
+
 *.log
 
 # -------------------------
 # Docker
 # -------------------------
-# ignorujemy tylko rzeczy tymczasowe, NIE docker-compose.yml
 .dockerignore
 docker-compose.override.yml

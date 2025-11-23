@@ -6,9 +6,7 @@ import Header from "./components/Header";
 import ExchangeForm from "./components/ExchangeForm";
 import Results from "./components/Results";
 import SettingsPanel from "./components/SettingsPanel";
-import Statistics from "./components/Statistics";
 import History from "./components/History";
-import About from "./components/About";
 
 function App() {
   const API_BASE =
@@ -38,6 +36,13 @@ function App() {
         body: JSON.stringify(data),
       });
       
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Błąd API:", response.status, errorText);
+        setResults([]);
+        return;
+      }
+      
       const result = await response.json();
       setResults(result.options || []);
     } catch (err) {
@@ -63,6 +68,12 @@ function App() {
           amount: tokens.amount
         }),
       });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Błąd odświeżania:", response.status, errorText);
+        return;
+      }
       
       const result = await response.json();
       setResults(result.options || []);
@@ -128,12 +139,14 @@ function App() {
             />
           </div>
         );
-      case 'stats':
-        return <Statistics />;
       case 'history':
-        return <History />;
-      case 'about':
-        return <About />;
+        return (
+          <div className="flex flex-col lg:flex-row items-start justify-start">
+            <div className="w-full lg:w-[calc(40%+40%+20%+5rem+2rem+2rem)] lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
+              <History />
+            </div>
+          </div>
+        );
       default:
         return <div>Nieznana zakładka</div>;
     }

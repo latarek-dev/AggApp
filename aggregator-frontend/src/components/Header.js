@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaExchangeAlt, FaChartBar, FaInfoCircle, FaHistory, FaWallet, FaSignOutAlt } from 'react-icons/fa';
+import { FaExchangeAlt, FaHistory, FaWallet, FaSignOutAlt } from 'react-icons/fa';
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 
 const Header = ({ activeTab, setActiveTab }) => {
@@ -9,9 +9,7 @@ const Header = ({ activeTab, setActiveTab }) => {
   
   const navItems = [
     { id: 'swap', label: 'Wymiana', icon: FaExchangeAlt },
-    { id: 'stats', label: 'Statystyki', icon: FaChartBar },
     { id: 'history', label: 'Historia', icon: FaHistory },
-    { id: 'about', label: 'O aplikacji', icon: FaInfoCircle },
   ];
 
   return (
@@ -20,9 +18,7 @@ const Header = ({ activeTab, setActiveTab }) => {
         <div className="flex items-center">
           {/* Logo */}
           <div className="w-full lg:w-2/5 lg:flex-shrink-0 lg:mr-20 flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <FaExchangeAlt size={20} className="text-white" />
-            </div>
+            <img src="/logo.svg" alt="AggApp Logo" className="w-10 h-10 flex-shrink-0 rounded-xl" />
             <div className="flex-1">
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 AggApp

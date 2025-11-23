@@ -34,7 +34,6 @@ async def exchange(request: ExchangeRequest,
         ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
 
-    # Równoległe przetwarzanie DEXów
     print(f"Przetwarzam {len(dexes)} DEXy równolegle...")
     tasks = [
         process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
@@ -49,13 +48,10 @@ async def exchange(request: ExchangeRequest,
         else:
             all_options.extend(result)
 
-    print(all_options)
-
     raw_options = [TransactionOptionRaw(
         dex=o.dex,
         pool=o.pool,
         amount_to=o.amount_to,
-        slippage=o.slippage,
         liquidity=o.liquidity,
         dex_fee=o.dex_fee,
         gas_cost=o.gas_cost
@@ -63,8 +59,6 @@ async def exchange(request: ExchangeRequest,
 
     full_option_map = {(o.dex, o.pool): o for o in all_options}
     sorted_raw = rank_options(raw_options)
-
-    print(f"Opcje wymiany po sortowaniu: {sorted_raw}")
 
     frontend_sorted = []
     for raw in sorted_raw:
@@ -87,7 +81,6 @@ async def exchange(request: ExchangeRequest,
                 percentage_change=percentage_change
             ))
 
-    print(frontend_sorted)
     if frontend_sorted:
         return {
             "options": frontend_sorted

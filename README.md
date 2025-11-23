@@ -1,9 +1,11 @@
 # AggApp – Agregator wymiany tokenów
 
-Projekt składa się z:
-- **backendu** (FastAPI + Redis cache),
-- **frontendu** (React + Tailwind, serwowany przez Nginx),
-- uruchamianych razem przez **Docker Compose**.  
+Aplikacja do porównywania kursów wymiany tokenów na różnych DEX-ach w sieci Arbitrum.
+
+Na projekt składa się:
+- **backend**,
+- **frontend**,
+- uruchamiane razem przez **Docker Compose**.  
 
 ---
 
@@ -16,20 +18,25 @@ Projekt składa się z:
 
 ---
 
-## Uruchamianie (Docker Compose)
+## Instrukcja
 
 ### 1. Wymagania
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) zainstalowany i uruchomiony
+- Porty **8000** i **8080** wolne (lub zmień w `docker-compose.yml`)
 
 ### 2. Klonowanie repozytorium
 ```bash
-git clone https://github.com/twoj-repo/aggapp.git
-cd aggapp
+git clone https://github.com/latarek-dev/AggApp.git
+cd AggApp
 ```
 
 ### 3. Plik `.env`
 Skopiuj przykładowy plik środowiskowy:
 ```bash
+# Windows
+copy .env.example .env
+
+# Linux/Mac
 cp .env.example .env
 ```
 
@@ -40,20 +47,25 @@ RPC_URL=https://arb1.arbitrum.io/rpc
 REDIS_URL=redis://:redispw@redis:6379/0
 ```
 
+**Uwaga**: Jeśli nie masz pliku `.env.example`, możesz utworzyć `.env` ręcznie lub pominąć ten krok - aplikacja użyje domyślnych wartości z `docker-compose.yml`.
+
 ### 4. Budowanie i uruchamianie
 ```bash
 docker compose up -d --build
 ```
 
-Podgląd logów backendu:
+Podgląd logów:
 ```bash
+# Logi backend
 docker compose logs -f api
+
+# Logi frontend
+docker compose logs -f frontend
+
+# Wszystkie logi
+docker compose logs -f
 ```
 
-Podgląd logów frontendu:
-```bash
-docker compose logs -f frontend
-```
 
 ### 5. Test działania
 - Backend API:  
@@ -63,29 +75,27 @@ docker compose logs -f frontend
   {"message": "API działa poprawnie"}
   ```
 
-- Frontend (React przez Nginx):  
+- **Frontend**:  
   [http://localhost:8080/](http://localhost:8080/)  
 
+### 6. Podłączenie portfela
+Aby wykonywać wymiany kryptowalut, musisz podłączyć portfel kryptowalutowy do aplikacji. Aplikacja obsługuje przede wszystkim następujące portfele:
+
+- **[MetaMask](https://metamask.io/)**
+- **[Rabby](https://rabby.io/)**
+
+**Instrukcja:**
+1. Zainstaluj rozszerzenie portfela w przeglądarce (MetaMask lub Rabby)
+2. Utwórz lub zaimportuj portfel
+3. Przełącz sieć na **Arbitrum One** w portfelu
+4. W aplikacji kliknij przycisk **"Połącz Portfel"** w prawym górnym rogu
+5. Wybierz swój portfel z listy i zatwierdź połączenie
+
+**Uwaga**: Upewnij się, że masz ETH na Arbitrum One do opłat za transakcje (gas fees).
+
+### 7. Zatrzymywanie aplikacji
+```bash
+docker compose down
+```
+
 ---
-
-## Struktura projektu
-
-```
-AggApp/
-│  .env.example
-│  docker-compose.yml
-│
-├─ aggregator-backend/
-│   ├─ Dockerfile
-│   ├─ requirements.txt
-│   ├─ config.py
-│   ├─ main.py
-│   └─ ...
-│
-├─ aggregator-frontend/
-│   ├─ Dockerfile
-│   ├─ nginx.conf
-│   ├─ package.json
-│   ├─ src/
-│   └─ ...
-```

@@ -33,7 +33,6 @@ class CoinGeckoService(ISingleTokenPriceService):
                 response = requests.get(url, timeout=5)
                 response.raise_for_status()
                 data = response.json()
-                print("dane z coingecko", data)
                 return Decimal(data.get(token_address, {}).get("usd", 0))
 
             except requests.exceptions.RequestException as e:

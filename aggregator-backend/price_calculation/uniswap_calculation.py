@@ -11,10 +11,4 @@ def uniswap_calculation(decimals_token, decimals_base, slot0_data):
         price = price_in_base * Decimal(10 ** (decimals_base - decimals_token))
         inverse_price = Decimal(1) / price if price != 0 else Decimal(0)
 
-    print(f"sqrt_price_x96: {sqrt_price_x96}")
-    print(f"sqrt_price: {sqrt_price}")
-    print(f"price_in_base: {price_in_base}")
-    print(f"decimals_token: {decimals_token}, decimals_base: {decimals_base}")
-    print(f"price: {price}, inverse_price: {inverse_price}")
-
     return price, inverse_price

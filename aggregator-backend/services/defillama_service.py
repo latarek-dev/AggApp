@@ -4,7 +4,7 @@ from typing import Optional, Dict, List
 from decimal import Decimal
 
 class DefiLlamaService:
-    """Fallback dla CoinGecko - ceny z DefiLlama."""
+    """Główny serwis cenowy - ceny z DefiLlama."""
 
     BASE_URL = "https://coins.llama.fi/prices/current"
     CHAIN = "arbitrum"

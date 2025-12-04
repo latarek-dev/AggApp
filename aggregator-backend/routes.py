@@ -4,10 +4,12 @@ from fastapi import APIRouter, HTTPException, Depends
 from models import ExchangeRequest, TransactionOption, TransactionOptionRaw, FrontendTransactionOption
 from pools_config import UNISWAP_POOLS, SUSHISWAP_POOLS, CAMELOT_POOLS, TOKENS, DEX_CONFIGS
 from services import CoinGeckoService, UniswapService, SushiswapService, CamelotService, RedisCacheService
-from exchange_utils import process_dex_pools, process_prices
+from exchange_utils import process_dex_pools, fetch_token_prices
 from decision_engine import rank_options
+from token_manager import TokenManager
 
 exchange_router = APIRouter()
+token_manager = TokenManager(TOKENS)
 
 def get_services(redis_cache_service: RedisCacheService = Depends(),
                  coin_gecko_service: CoinGeckoService = Depends(), 
@@ -26,17 +28,35 @@ async def exchange(request: ExchangeRequest,
     amount = request.amount
     print(f"Token_from: {token_from}, Token_to: {token_to}, Amount: {amount}")
 
-    all_options = []
-
+    all_token_addresses = set()
     dexes = [
         ("Uniswap", UNISWAP_POOLS, uniswap_service),
         ("SushiSwap", SUSHISWAP_POOLS, sushiswap_service),
         ("Camelot", CAMELOT_POOLS, camelot_service)
     ]
+    
+    for dex_name, pools, _ in dexes:
+        for pair in pools.keys():
+            tokens = pair.split('/')
+            if set(tokens) == {token_from, token_to}:
+                token_addresses = token_manager.get_pool_addresses(pair)
+                all_token_addresses.update(token_addresses)
+    
+    # Dodaj ETH (potrzebny dla gas cost)
+    eth_address = token_manager.get_address_by_symbol("ETH")
+    if eth_address:
+        all_token_addresses.add(eth_address)
+    
+    print(f"Pobieranie cen dla {len(all_token_addresses)} tokenów (raz na początku dla wszystkich DEXów)...")
+    all_prices = await fetch_token_prices(coin_gecko_service, list(all_token_addresses), redis_cache_service)
+    eth_price = Decimal(all_prices.get(eth_address, 0)) if eth_address else Decimal("0")
+    
+    all_options = []
 
     print(f"Przetwarzam {len(dexes)} DEXy równolegle...")
     tasks = [
-        process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, redis_cache_service, coin_gecko_service)
+        process_dex_pools(dex_name, pools, dex_service, token_from, token_to, amount, 
+                         redis_cache_service, all_prices, eth_price)
         for dex_name, pools, dex_service in dexes
     ]
     

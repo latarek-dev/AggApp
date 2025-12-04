@@ -1,0 +1,4383 @@
+{
+  "metadata": {
+    "timestamp_start": "2025-12-04T19:28:16.303565",
+    "base_url": "http://localhost:8000",
+    "tokens": [
+      "ETH",
+      "USDC",
+      "USDT",
+      "DAI",
+      "WBTC"
+    ],
+    "amount": 1.0,
+    "mode": "LOSOWY",
+    "total_pairs": 20,
+    "total_requests": 100,
+    "randomize": true,
+    "timestamp_end": "2025-12-04T19:32:35.304288",
+    "total_elapsed_seconds": 258.92
+  },
+  "results": [
+    {
+      "timestamp": "2025-12-04T19:28:20.153360",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3842.09,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998517329865683,
+              "value_from_usd": 0.9997357527504142,
+              "value_to_usd": 0.9996203127291121,
+              "liquidity": 113176.21415987301,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.04066334361117481,
+              "percentage_change": -0.011547053407307491
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998637636411546,
+              "value_from_usd": 0.9997357527504142,
+              "value_to_usd": 0.9996323405991484,
+              "liquidity": 182345.60586807888,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03935162284952401,
+              "percentage_change": -0.01034394848651213
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.11604167370572628,
+              "value_from_usd": 0.9997357527504142,
+              "value_to_usd": 0.11601481532951043,
+              "liquidity": 0.42740940410765577,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03935162284952401,
+              "percentage_change": -88.39545199715651
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:23.122475",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2949.87,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999627,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9994546948422498,
+              "liquidity": 464492.54225973506,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03935162284952401,
+              "percentage_change": -0.031392324218599256
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9960382838286658,
+              "liquidity": 73.06718232260015,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03935162284952401,
+              "percentage_change": -0.3731125182791285
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:26.881969",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3748.17,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 2242.622892432674,
+              "liquidity": 3799.9380430611695,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03935162284952401,
+              "percentage_change": -97.52722528882937
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 504.62538088543715,
+              "liquidity": 1684.393652662308,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.04066334361117481,
+              "percentage_change": -99.4435868443692
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:31.274359",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4370.1,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322891958897755,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9927889826090672,
+              "liquidity": 1149470.8408835637,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.04064471392840394,
+              "percentage_change": -0.6945628776885603
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322851477411281,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9926645150506052,
+              "liquidity": 73893582.68998814,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": -0.7070129607546916
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322908036118264,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9928384148942402,
+              "liquidity": 565419.218810921,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": -0.6896183277660233
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:35.497624",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4213.21,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000048,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.9997807423750487,
+              "liquidity": 113020.24664505916,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.04064471392840394,
+              "percentage_change": 0.3651012446435493
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999937,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.9996697720392211,
+              "liquidity": 182076.50295433338,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": 0.3539612531249858
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.2786135220819576,
+              "liquidity": 0.42694874769720736,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": -72.03079318625983
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:38.531242",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3012.12,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3071.6109434921404,
+              "value_from_usd": 3074.678558110014,
+              "value_to_usd": 3059.766224801961,
+              "liquidity": 218405.02624241123,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": -0.48500462816572976
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 77.42419548455156,
+              "value_from_usd": 3074.678558110014,
+              "value_to_usd": 77.12563299333796,
+              "liquidity": 204.1466698019031,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03933359412426188,
+              "percentage_change": -97.49158711924844
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:42.754747",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4204.83,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03397522,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3081.29995843276,
+              "liquidity": 75155124.15067452,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": 0.21585222948556684
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.0339475,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3078.785960441054,
+              "liquidity": 492463.88341459347,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.040644511294223286,
+              "percentage_change": 0.13408724242142078
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 1221.2434508228625,
+              "liquidity": 4021.2315365723257,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -60.28041578070149
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:46.016681",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3237.25,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9998276305484444,
+              "value_to_usd": 0.9948974736295269,
+              "liquidity": 7387678.744851277,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -0.49310068738679824
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:50.357232",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4323.56,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000048,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9997837167481144,
+              "liquidity": 113176.21252220134,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.040644511294223286,
+              "percentage_change": 0.0015174834934017917
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999938,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9996737458178766,
+              "liquidity": 182345.79110721016,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -0.009482155447128271
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.2786143509642522,
+              "liquidity": 0.4274093970966062,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -72.132114754052
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:54.674177",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4295.52,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.083e-05,
+              "value_from_usd": 0.9997357294331015,
+              "value_to_usd": 0.9832841535441381,
+              "liquidity": 1685.6693311452025,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.040727708795375905,
+              "percentage_change": -1.6455924705514164
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9997357294331015,
+              "value_to_usd": 0.9959951213646533,
+              "liquidity": 3801.6540843994494,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.3741596862372151
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:58.855996",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4154.62,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.966825,
+              "value_from_usd": 3080.9569277489636,
+              "value_to_usd": 3094.148916362625,
+              "liquidity": 1150947.3903926348,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.040727708795375905,
+              "percentage_change": 0.4281782875588601
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3096.816313,
+              "value_from_usd": 3080.9569277489636,
+              "value_to_usd": 3095.997915597383,
+              "liquidity": 73808687.8308082,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": 0.4881920845095567
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.543346,
+              "value_from_usd": 3080.9569277489636,
+              "value_to_usd": 3093.725549275661,
+              "liquidity": 565920.0732857591,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": 0.41443687224885395
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:28:58.972941",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 97.45,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.083e-05,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9832841535441381,
+              "liquidity": 1685.6693311452025,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.040727708795375905,
+              "percentage_change": -1.6449495161350696
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9959951213646533,
+              "liquidity": 3801.6540843994494,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.3735084203141008
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:01.302541",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2309.05,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322755273798318,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9943950967764413,
+              "liquidity": 1150947.3903926348,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.040727708795375905,
+              "percentage_change": -0.5335542204846698
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322586228090745,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9938742742325881,
+              "liquidity": 73808687.8308082,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.5856505828730816
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322600161689894,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9939172030514147,
+              "liquidity": 565920.0732857591,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.5813565381377059
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:04.450441",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3121.96,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 1.0003520841828373,
+              "liquidity": 464623.8452270083,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": 0.05836738513548699
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9969974346601654,
+              "liquidity": 73.10060967117755,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.27717523000492233
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:05.890244",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 1418.3,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.0002375004413497,
+              "value_from_usd": 1.0007904303913486,
+              "value_to_usd": 1.0000059908962515,
+              "liquidity": 464623.8452270083,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.07838199399951828
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9977069647488508,
+              "value_from_usd": 1.0007904303913486,
+              "value_to_usd": 0.9974760409078146,
+              "liquidity": 73.10060967117755,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.3311771758486901
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:05.928431",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 14.93,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:09.788204",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3839.0,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 29.399507218709296,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 90578.61543788807,
+              "liquidity": 75244474.17193045,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.12564734648830644
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 28.77707959685175,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 88660.94274430374,
+              "liquidity": 494394.4714204158,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.040727708795375905,
+              "percentage_change": -2.240123461486835
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.781218995433516,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 2406.9020760699773,
+              "liquidity": 4026.309612604821,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -97.34608676026052
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:09.844047",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 32.61,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.0002375004413497,
+              "value_from_usd": 1.0007904303913486,
+              "value_to_usd": 1.0000059908962515,
+              "liquidity": 464623.8452270083,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.07838199399951828
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9977069647488508,
+              "value_from_usd": 1.0007904303913486,
+              "value_to_usd": 0.9974760409078146,
+              "liquidity": 73.10060967117755,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.3311771758486901
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:12.785194",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2922.96,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 1.0007904303913486,
+              "value_to_usd": 0.9948974736295269,
+              "liquidity": 7389867.211418323,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039413911737460554,
+              "percentage_change": -0.5888302468597144
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:15.301912",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2492.79,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03397623,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3081.391557926686,
+              "liquidity": 75244474.17193045,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": 0.21883140109216678
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03396808,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3080.652413495502,
+              "liquidity": 494394.4714204158,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.040644511294223286,
+              "percentage_change": 0.1947915509993371
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 1221.2434508228625,
+              "liquidity": 4026.309612604821,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -60.28041578070149
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:18.471022",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3138.07,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.0002375004413497,
+              "value_from_usd": 0.9998276305484444,
+              "value_to_usd": 0.9963803935244736,
+              "liquidity": 463255.2324878109,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -0.34478313247652675
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9977069647488508,
+              "value_from_usd": 0.9998276305484444,
+              "value_to_usd": 0.9938596160611138,
+              "liquidity": 72.9281260158893,
+              "dex_fee": 0.003,
+              "gas_cost": 0.039333398026667694,
+              "percentage_change": -0.5969043368062196
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:20.228549",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 1741.38,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90863.127737,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 90847.46570950534,
+              "liquidity": 7389867.211418323,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.17079400127007022
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:23.982448",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3726.78,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3093.081805,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3092.548652185655,
+              "liquidity": 12571634.312742276,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.5817034760770403
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3020.351598,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3019.830981651548,
+              "liquidity": 67598.19166226387,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": -1.783357836689509
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2914.731979,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 2914.229568247348,
+              "liquidity": 33104.88834694826,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -5.217926292765072
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:24.074670",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 64.98,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:27.013448",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2918.78,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3074.196581907504,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3062.3418925015576,
+              "liquidity": 218406.8914630778,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -0.4007377680960259
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 77.42419548455156,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 77.12563299333796,
+              "liquidity": 204.14605491041723,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -97.49157461349618
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:30.833130",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3793.2,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.083e-05,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9822005140754582,
+              "liquidity": 1684.390187986726,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": -1.7533428165499743
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9997291940848987,
+              "value_to_usd": 0.9948974736295269,
+              "liquidity": 3799.9233183304727,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -0.48330292682855447
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:33.782172",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2928.95,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90838.889778,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 90823.23192838904,
+              "liquidity": 7387677.896777325,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.14407319979130181
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:37.467977",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3659.27,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.0339702,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3080.844681740178,
+              "liquidity": 75155011.7456596,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.2010448616983342
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03395601,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3079.557754196805,
+              "liquidity": 493861.5752982627,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": 0.15918897546311728
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 1221.2434508228625,
+              "liquidity": 4021.2315365723257,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -60.28041578070149
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:41.371878",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3879.45,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.283183,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3089.7505125825946,
+              "liquidity": 12571436.370422862,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.49069709930078914
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3016.894132,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3016.3741116130655,
+              "liquidity": 67597.77804639058,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": -1.8957886878323837
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2914.731979,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 2914.229568247348,
+              "liquidity": 33104.88834694826,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -5.217926292765072
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:43.422280",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2024.86,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9998276305484444,
+              "value_to_usd": 0.9948974736295269,
+              "liquidity": 7387677.896777325,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -0.49310068738679824
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:46.495576",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3041.06,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.9923709133734903,
+              "liquidity": 218406.8914630778,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -0.37875008837995106
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.9630993684810649,
+              "liquidity": 204.14605491041723,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -3.3172359405242435
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:48.849684",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2324.71,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90838.889778,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 90823.23192838904,
+              "liquidity": 7390044.25480884,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.14407319979130181
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:51.971968",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3098.84,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.284112,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3089.7514414224634,
+              "liquidity": 12577556.912458932,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.49072730878389187
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3016.894132,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3016.3741116130655,
+              "liquidity": 67597.77804639058,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": -1.8957886878323837
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2914.731979,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 2914.229568247348,
+              "liquidity": 33104.88834694826,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -5.217926292765072
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:55.962457",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3965.61,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.0339702,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3080.844681740178,
+              "liquidity": 75242405.30552752,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": 0.2010448616983342
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03395601,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 3079.557754196805,
+              "liquidity": 493861.5752982627,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": 0.15918897546311728
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3074.663229303136,
+              "value_to_usd": 1221.2434508228625,
+              "liquidity": 4021.2315365723257,
+              "dex_fee": 0.003,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -60.28041578070149
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:29:59.954455",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3948.28,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 2242.608179931507,
+              "liquidity": 3799.9233183304727,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.03546670154949607,
+              "percentage_change": -97.5272415112183
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90692.56824334794,
+              "value_to_usd": 504.6220703415512,
+              "liquidity": 1684.390187986726,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.03664892493447927,
+              "percentage_change": -99.44359049466155
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:04.151600",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4171.22,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.763172,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 3091.976809817941,
+              "liquidity": 12623659.613301728,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": -0.0006585725942072571
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3016.894132,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 3018.078763952551,
+              "liquidity": 67920.43930971582,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.03685553956151347,
+              "percentage_change": -2.3906363679795315
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2914.731979,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 2915.876495341764,
+              "liquidity": 33224.13425982585,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": -5.696016770902835
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:07.030403",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2852.01,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.999954494078992,
+              "liquidity": 463322.1971741291,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": 0.38254367638740466
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9961438089302048,
+              "value_to_usd": 0.9966011778623364,
+              "liquidity": 72.94774342584998,
+              "dex_fee": 0.003,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": 0.045913946162325435
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:09.975673",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2909.96,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3074.196581907504,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 3062.3418925015576,
+              "liquidity": 219030.9782149807,
+              "dex_fee": 0.003,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": -0.9590979132399954
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 77.42419548455156,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 77.12563299333796,
+              "liquidity": 204.84137936695942,
+              "dex_fee": 0.003,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": -97.50563701447692
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:14.117050",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4092.02,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.083e-05,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9821958435315847,
+              "liquidity": 1684.3865708847682,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.03685553956151347,
+              "percentage_change": -1.75415995724345
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9948927427092784,
+              "liquidity": 3799.923916870822,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": -0.48413063074428275
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:18.200597",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4039.56,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999531,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.999923481906344,
+              "liquidity": 1240309.8821116046,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.03685553956151347,
+              "percentage_change": 0.01907776878895405
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999462,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9998544548123853,
+              "liquidity": 2545912.079437603,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": 0.012173214186797838
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.99944,
+              "value_from_usd": 0.9997327552027989,
+              "value_to_usd": 0.9998324461737319,
+              "liquidity": 45895.754859229135,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.035666651188561424,
+              "percentage_change": 0.009971761994810669
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:22.008125",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3787.13,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3089.627389,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 3090.840580834498,
+              "liquidity": 12618347.443799822,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027918879272657616,
+              "percentage_change": -0.03740598599468157
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3016.894132,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 3018.078763952551,
+              "liquidity": 67920.43930971582,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.028849508581746203,
+              "percentage_change": -2.3906363679795315
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2914.731979,
+              "value_from_usd": 3091.9971728639352,
+              "value_to_usd": 2915.876495341764,
+              "liquidity": 33224.13425982585,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027918879272657616,
+              "percentage_change": -5.696016770902835
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:24.962833",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2915.96,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.083e-05,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9855228474463705,
+              "liquidity": 1688.2928606096532,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.03685553956151347,
+              "percentage_change": -1.4194381594646386
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9982627549849201,
+              "liquidity": 3805.148691468631,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027918879272657616,
+              "percentage_change": -0.1450818660505142
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:28.155600",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3168.97,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 1.0000079875266286,
+              "liquidity": 464583.04704554746,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": 0.023949753396304858
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9966544919213643,
+              "liquidity": 73.08865777988422,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.3114774432892125
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:32.065788",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3877.95,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000047,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9997601440073595,
+              "liquidity": 113174.62718720247,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.0008403363102706067
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999938,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9996511752731932,
+              "liquidity": 182343.3323168712,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.011739732441986447
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.2786080604342826,
+              "liquidity": 0.427402610164441,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -72.13274395267987
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:35.897255",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3793.37,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.798868,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3089.9122954915756,
+              "liquidity": 1153252.2735204585,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.030722057379161626
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.700321,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3089.8137767590447,
+              "liquidity": 74087461.28734928,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.03390947683093975
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3088.520862,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3087.634942920537,
+              "liquidity": 566679.0192672317,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.10440223674207771
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:36.088862",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 180.24,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000047,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9997601440073595,
+              "liquidity": 113174.62718720247,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.0008403363102706067
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999938,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9996511752731932,
+              "liquidity": 182343.3323168712,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.011739732441986447
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.2786080604342826,
+              "liquidity": 0.427402610164441,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -72.13274395267987
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:40.296825",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4171.72,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2242.572206388423,
+              "liquidity": 3805.148691468631,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -97.53561705260128
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 504.61397572923727,
+              "liquidity": 1688.2928606096532,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -99.4454751230468
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:40.350306",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 23.18,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.798868,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3089.9122954915756,
+              "liquidity": 1153252.2735204585,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.030722057379161626
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3090.700321,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3089.8137767590447,
+              "liquidity": 74087461.28734928,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.03390947683093975
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3088.520862,
+              "value_from_usd": 3090.861871849356,
+              "value_to_usd": 3087.634942920537,
+              "liquidity": 566679.0192672317,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.10440223674207771
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:43.778636",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3393.96,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 1.0000079875266286,
+              "liquidity": 464583.04704554746,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": 0.023949753396304858
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9966544919213643,
+              "liquidity": 73.08865777988422,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.3114774432892125
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:47.581590",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3762.87,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322996640154928,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9983379997903136,
+              "liquidity": 1154043.887928408,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.1375552265509956
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322982655735673,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9982947758820383,
+              "liquidity": 74087963.30362882,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.14187885757970367
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000323005952240579,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9983667821607997,
+              "liquidity": 566680.5477252181,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.13467616366475876
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:47.809800",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 194.66,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322996640154928,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9983379997903136,
+              "liquidity": 1154043.887928408,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.1375552265509956
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322982655735673,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9982947758820383,
+              "liquidity": 74087963.30362882,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.14187885757970367
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000323005952240579,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9983667821607997,
+              "liquidity": 566680.5477252181,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.13467616366475876
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:50.912138",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3070.48,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9975991483053029,
+              "liquidity": 219382.0258573187,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.21698993532939972
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9681733883795143,
+              "liquidity": 205.08988983060772,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -3.160247158256545
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:54.917231",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3974.16,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2242.572206388423,
+              "liquidity": 3805.148691468631,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -97.53561705260128
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 504.61397572923727,
+              "liquidity": 1688.2928606096532,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -99.4454751230468
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:30:58.752521",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3805.14,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998521912849603,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9996207709214289,
+              "liquidity": 113174.62718720247,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.02883891579186579,
+              "percentage_change": -0.00924130755273835
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998611785558604,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.9996297561121841,
+              "liquidity": 182343.3323168712,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -0.00834253066979975
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.11604167370572628,
+              "value_from_usd": 0.9997131574889576,
+              "value_to_usd": 0.11601481532951043,
+              "liquidity": 0.427402610164441,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027908628185676573,
+              "percentage_change": -88.39518971412639
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:01.978857",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3195.38,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90824.189825,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 90882.16848743954,
+              "liquidity": 7370269.382070507,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.12876035605753494
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:05.896092",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3859.24,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.201549,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3093.354877039191,
+              "liquidity": 1153293.5358829554,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": 0.07624325480418392
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.335554,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3093.48884537116,
+              "liquidity": 74091660.63945995,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": 0.08057739941788974
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3092.169583,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3091.3234670497186,
+              "liquidity": 566697.2209352588,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": 0.010523061571377897
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:10.113942",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4175.86,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03396505,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3090.7971181586654,
+              "liquidity": 75581303.27554846,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.006505382222421401
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03396629,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3090.9099573397216,
+              "liquidity": 496034.9856896081,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": -0.0028548080785130853
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 1225.3743566944565,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -60.356678404732556
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:14.472123",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4324.29,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2242.6018408467507,
+              "liquidity": 3805.1783505601265,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -97.53558448702611
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 504.6206439478982,
+              "liquidity": 1688.2998392860172,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": -99.4454677952808
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:17.018446",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2510.28,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 29.409416951596413,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 90904.45484296554,
+              "liquidity": 75581303.27554846,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.10426967773668702
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 28.778604106809706,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 88954.61347556763,
+              "liquidity": 496034.9856896081,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": -2.246968049837945
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.781218995433516,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2414.7465082267818,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -97.34641314994788
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:17.070751",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 14.4,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:21.143214",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4037.16,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000419,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0001452535413589,
+              "liquidity": 1240345.2651664317,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": -0.04927933385811715
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000338,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0000642757055351,
+              "liquidity": 2546139.6260962505,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.05737195142532255
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.00036,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0000862696856354,
+              "liquidity": 45898.107537637894,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.055173956530525474
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:21.283438",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 101.63,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000419,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0001452535413589,
+              "liquidity": 1240345.2651664317,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.028840187779773988,
+              "percentage_change": -0.04927933385811715
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000338,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0000642757055351,
+              "liquidity": 2546139.6260962505,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.05737195142532255
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.00036,
+              "value_from_usd": 1.0006383614602152,
+              "value_to_usd": 1.0000862696856354,
+              "liquidity": 45898.107537637894,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.027909859141716762,
+              "percentage_change": -0.055173956530525474
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:25.295953",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3986.26,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322715374179619,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 0.9975126405098439,
+              "liquidity": 1153295.402701053,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -0.22143335953448218
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322681918141256,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 0.9974092279555047,
+              "liquidity": 74091762.01189162,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.23177744543932027
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322678701394383,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 0.9973992849967123,
+              "liquidity": 566699.6128970133,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.02348664071836674,
+              "percentage_change": -0.23277201346400792
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:29.369626",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4031.6,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 29.40683071104461,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 90896.46077807668,
+              "liquidity": 75581339.13013901,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.11305442818368779
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 28.787332001741778,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 88981.59138308727,
+              "liquidity": 496034.61982901575,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -2.2173217824586775
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.781218995433516,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2414.7465082267818,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -97.34641314994788
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:31.797254",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2398.74,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.447124,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3093.6003848420596,
+              "liquidity": 1153295.402701053,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": 0.08418592532777054
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3096.069102,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3095.2219190172887,
+              "liquidity": 74091762.01189162,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.13664581273697843
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3094.408795,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3093.5620663300933,
+              "liquidity": 566699.6128970133,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.08294624450318627
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:34.856223",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3008.06,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90871.539713,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 90929.5486017832,
+              "liquidity": 7369425.530798612,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.0766939184633791
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:37.885079",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2999.3,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9976431490598052,
+              "liquidity": 219386.93415886807,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.2125888412258082
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9682160912623807,
+              "liquidity": 205.0953584006374,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -3.155975881363324
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:41.807264",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3879.5,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03396782,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3091.04918632925,
+              "liquidity": 75841638.88863933,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.0016495293732257733
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.033956,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3089.973574135638,
+              "liquidity": 490610.6860938839,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -0.033148685450019755
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 1225.3743566944565,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -60.356678404732556
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:41.873793",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 31.89,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9976431490598052,
+              "liquidity": 219386.93415886807,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.2125888412258082
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9682160912623807,
+              "liquidity": 205.0953584006374,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -3.155975881363324
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:46.232163",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4314.76,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999531,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0001690620686903,
+              "liquidity": 1240345.2651664317,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": 0.04428150438849478
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999462,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0001000180217496,
+              "liquidity": 2546139.6260962505,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.037375209912594645
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.99944,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0000780039777974,
+              "liquidity": 45898.107537637894,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.035173202978239365
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:49.163044",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2893.25,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 1.0002000818578956,
+              "liquidity": 464605.8229116979,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.04316363366348624
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9968459420702811,
+              "liquidity": 73.09533000562062,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.2923279961704021
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:52.984692",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3779.21,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 2243.215656,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2242.6018408467507,
+              "liquidity": 3805.1783505601265,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -97.53558448702611
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDC/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 504.758762,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 504.6206439478982,
+              "liquidity": 1688.2998392860172,
+              "dex_fee": 0.00015,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -99.4454677952808
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:53.141076",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 98.13,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:53.193711",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 17.0,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:53.255163",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 29.05,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:53.310830",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 13.79,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:53.368465",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 16.32,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:56.535868",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3125.13,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999531,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0001690620686903,
+              "liquidity": 1240345.2651664317,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": 0.04428150438849478
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.999461,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0000990173833881,
+              "liquidity": 2546139.4766243114,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.037275118688301724
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 0.99944,
+              "value_from_usd": 0.9997263681930859,
+              "value_to_usd": 1.0000780039777974,
+              "liquidity": 45898.107537637894,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.035173202978239365
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:31:56.589653",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 14.41,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:00.762965",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4122.42,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000046,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9997723556060227,
+              "liquidity": 113175.54915130399,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": 0.0003811062645278436
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999938,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.999664385158258,
+              "liquidity": 182344.77853387332,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.010418438115900144
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.2786117420989947,
+              "liquidity": 0.4274065823589583,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -72.1323757009751
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:03.664248",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2862.09,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9976431490598052,
+              "liquidity": 219386.93415886807,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.2125888412258082
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9682160912623807,
+              "liquidity": 205.0953584006374,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -3.155975881363324
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:06.729404",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3020.78,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 90892.835963,
+              "value_from_usd": 91016.2212423182,
+              "value_to_usd": 90910.84711066243,
+              "liquidity": 7369426.963487068,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.1157751115322921
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:06.895722",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 113.5,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322757596316787,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9977628127595839,
+              "liquidity": 219386.93415886807,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.2006197009356677
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "DAI/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000313237352078832,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9683322252926448,
+              "liquidity": 205.0953584006374,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -3.144359789739368
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:06.961865",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 14.92,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:07.135698",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 100.66,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 1.000046,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9997723556060227,
+              "liquidity": 113175.54915130399,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": 0.0003811062645278436
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999938,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.999664385158258,
+              "liquidity": 182344.77853387332,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.010418438115900144
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.278688,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.2786117420989947,
+              "liquidity": 0.4274065823589583,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -72.1323757009751
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:11.005016",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3828.35,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000323387386870214,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 0.999709727723655,
+              "liquidity": 12635559.925286567,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.04883335649355709
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.0003233419931058,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 0.9995693988496631,
+              "liquidity": 67906.76666570068,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02417516986068489,
+              "percentage_change": -0.06286346371397197
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 0.000322832097585591,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 0.9979931236689609,
+              "liquidity": 33217.56164814248,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.22045975280994493
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:11.064178",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 14.6,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:12.617235",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 1520.18,
+        "n_options": 1,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 1.097e-05,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 0.9984479470282307,
+              "liquidity": 7369426.963487068,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.17498642778863988
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:16.489814",
+      "request": {
+        "token_from": "USDT",
+        "token_to": "USDC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3814.66,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000419,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 1.0001452535413589,
+              "liquidity": 1240269.640731669,
+              "dex_fee": 2.5e-05,
+              "gas_cost": 0.02417516986068489,
+              "percentage_change": -0.005289403308273352
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.000338,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 1.0000642757055351,
+              "liquidity": 2545713.4677877477,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.013385582567504333
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/USDT",
+              "amount_from": 1.0,
+              "amount_to": 1.00036,
+              "value_from_usd": 1.0001981580558204,
+              "value_to_usd": 1.0000862696856354,
+              "liquidity": 45893.48717624558,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02339532567163054,
+              "percentage_change": -0.011186620299564506
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:16.626836",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 96.67,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:16.688487",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 24.83,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:19.804736",
+      "request": {
+        "token_from": "DAI",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3062.58,
+        "n_options": 2,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.999562,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 1.0000079875266286,
+              "liquidity": 464583.04704554746,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.023949753396304858
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.99621,
+              "value_from_usd": 0.9997685454254653,
+              "value_to_usd": 0.9966544919213643,
+              "liquidity": 73.08865777988422,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -0.3114774432892125
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:23.958379",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4113.61,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 29.449642338371092,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 91028.79144105648,
+              "liquidity": 75582245.8132217,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.0323649381744574
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 28.815977019640176,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 89070.13308183318,
+              "liquidity": 496038.03449021984,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -2.120022506251861
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.781218995433516,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2414.7465082267818,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -97.34641314994788
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:24.022827",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "ETH",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 26.55,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 29.449642338371092,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 91028.79144105648,
+              "liquidity": 75582245.8132217,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": 0.0323649381744574
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 28.815977019640176,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 89070.13308183318,
+              "liquidity": 496038.03449021984,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.024172270483967986,
+              "percentage_change": -2.120022506251861
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.781218995433516,
+              "value_from_usd": 90999.33956106838,
+              "value_to_usd": 2414.7465082267818,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.023392519823194825,
+              "percentage_change": -97.34641314994788
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:28.173683",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 4107.14,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998538931845421,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.9996224724270982,
+              "liquidity": 113182.04998713991,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.02725770488661508,
+              "percentage_change": -0.019711621183405387
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998610896604808,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.9996296672373797,
+              "liquidity": 182354.93618113536,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.026546265286048795,
+              "percentage_change": -0.01899201030368717
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.11604167370572628,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.11601481532951043,
+              "liquidity": 0.42743460118772386,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -88.3964246374968
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:30.751343",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "WBTC",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 2534.71,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03392224,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3086.901436432056,
+              "liquidity": 75582245.8132217,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -0.13253851052893376
+            },
+            {
+              "dex": "Camelot",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.03392226,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3086.903256418848,
+              "liquidity": 496038.03449021984,
+              "dex_fee": 0.00011,
+              "gas_cost": 0.02725770488661508,
+              "percentage_change": -0.13247963030078724
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "ETH/WBTC",
+              "amount_from": 1.0,
+              "amount_to": 0.01346575,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 1225.3743566944565,
+              "liquidity": 4039.6220119149443,
+              "dex_fee": 0.003,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -60.356678404732556
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:30.820223",
+      "request": {
+        "token_from": "USDC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 28.44,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Camelot",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998538931845421,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.9996224724270982,
+              "liquidity": 113182.04998713991,
+              "dex_fee": 5e-05,
+              "gas_cost": 0.02725770488661508,
+              "percentage_change": -0.019711621183405387
+            },
+            {
+              "dex": "Uniswap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.9998610896604808,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.9996296672373797,
+              "liquidity": 182354.93618113536,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.026546265286048795,
+              "percentage_change": -0.01899201030368717
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDC/DAI",
+              "amount_from": 1.0,
+              "amount_to": 0.11604167370572628,
+              "value_from_usd": 0.999819553069917,
+              "value_to_usd": 0.11601481532951043,
+              "liquidity": 0.42743460118772386,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -88.3964246374968
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:34.869120",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 3953.88,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3093.316551,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3094.6967361187417,
+              "liquidity": 12640571.831426376,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": 0.11965509114264385
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3019.558628,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3020.9059035907208,
+              "liquidity": 67902.94287272789,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02725770488661508,
+              "percentage_change": -2.2676265495325523
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2921.755809,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 2923.0594466399552,
+              "liquidity": 33218.49111064382,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -5.433155955844338
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:34.997049",
+      "request": {
+        "token_from": "ETH",
+        "token_to": "USDT",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 200,
+        "ok": true,
+        "elapsed_ms": 23.75,
+        "n_options": 3,
+        "data": {
+          "options": [
+            {
+              "dex": "Uniswap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3093.316551,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3094.6967361187417,
+              "liquidity": 12640571.831426376,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": 0.11965509114264385
+            },
+            {
+              "dex": "Camelot",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 3019.558628,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 3020.9059035907208,
+              "liquidity": 67902.94287272789,
+              "dex_fee": 0.0001,
+              "gas_cost": 0.02725770488661508,
+              "percentage_change": -2.2676265495325523
+            },
+            {
+              "dex": "SushiSwap",
+              "pair": "USDT/ETH",
+              "amount_from": 1.0,
+              "amount_to": 2921.755809,
+              "value_from_usd": 3090.998199406025,
+              "value_to_usd": 2923.0594466399552,
+              "liquidity": 33218.49111064382,
+              "dex_fee": 0.0005,
+              "gas_cost": 0.026378424083821045,
+              "percentage_change": -5.433155955844338
+            }
+          ]
+        },
+        "error": ""
+      }
+    },
+    {
+      "timestamp": "2025-12-04T19:32:35.113806",
+      "request": {
+        "token_from": "WBTC",
+        "token_to": "DAI",
+        "amount": 1.0
+      },
+      "response": {
+        "status_code": 404,
+        "ok": false,
+        "elapsed_ms": 16.82,
+        "n_options": null,
+        "data": null,
+        "error": "{\"detail\":\"No exchange options available.\"}"
+      }
+    }
+  ],
+  "statistics": {
+    "total": 100,
+    "success": 86,
+    "errors": 14,
+    "success_rate": 86.0,
+    "avg_time_ms": 2552.95
+  }
+}

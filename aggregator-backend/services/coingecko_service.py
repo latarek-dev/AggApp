@@ -6,7 +6,7 @@ from decimal import Decimal
 from interfaces import ISingleTokenPriceService
 
 class CoinGeckoService(ISingleTokenPriceService):
-    """Pobiera ceny tokenów z CoinGecko. Circuit Breaker wyłącza API po 3 błędach na 60s."""
+    """Fallback serwis cenowy - CoinGecko (gdy DefiLlama nie zwróci cen). Circuit Breaker wyłącza API po 3 błędach na 60s."""
 
     BASE_URL = "https://api.coingecko.com/api/v3/simple/token_price/arbitrum-one"
     PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
@@ -28,7 +28,7 @@ class CoinGeckoService(ISingleTokenPriceService):
         """Pobiera cenę tokena w USD."""
         token_address = token_address.lower()
         url = f"{self.BASE_URL}?contract_addresses={token_address}&vs_currencies=usd"
-        for _ in range(3):
+        for attempt in range(2):
             try:
                 response = requests.get(url, timeout=5)
                 response.raise_for_status()
@@ -36,8 +36,12 @@ class CoinGeckoService(ISingleTokenPriceService):
                 return Decimal(data.get(token_address, {}).get("usd", 0))
 
             except requests.exceptions.RequestException as e:
-                print(f"Błąd CoinGecko: {e}, ponawiam próbę...")
-                time.sleep(1)
+                if attempt < 1:
+                    print(f"Błąd CoinGecko: {e}, ponawiam próbę...")
+                    time.sleep(0.1)
+                else:
+                    print(f"Błąd CoinGecko: {e}")
+                    return None
 
         return None
 
@@ -123,8 +127,9 @@ class CoinGeckoService(ISingleTokenPriceService):
         """WETH przez ID 'ethereum' (adres nie działa w CoinGecko)."""
         url = f"{self.PRICE_URL}?ids=ethereum&vs_currencies=usd"
         
-        delay = 0.5
-        for attempt in range(4):
+        delay = 0.1
+        max_attempts = 2
+        for attempt in range(max_attempts):
             try:
                 response = requests.get(url, timeout=5)
                 response.raise_for_status()
@@ -137,14 +142,14 @@ class CoinGeckoService(ISingleTokenPriceService):
                 
             except requests.exceptions.HTTPError as e:
                 if hasattr(e.response, 'status_code') and e.response.status_code == 429:
-                    if attempt < 3:
-                        jitter = random.uniform(0, 0.2)
+                    if attempt < max_attempts - 1:
+                        jitter = random.uniform(0, 0.1)
                         sleep_time = delay + jitter
                         print(f"CoinGecko 429 (WETH) - czekam {sleep_time:.2f}s")
                         time.sleep(sleep_time)
                         delay *= 2
                         continue
-                print(f"Błąd CoinGecko WETH: {e}")
+                print(f"CoinGecko 429 (WETH) - przechodzę do fallback")
                 return None
                 
             except requests.exceptions.RequestException as e:
@@ -154,15 +159,16 @@ class CoinGeckoService(ISingleTokenPriceService):
         return None
     
     def _get_prices_by_address(self, token_addresses: List[str]) -> Dict[str, Optional[Decimal]]:
-        """Ceny przez adresy kontraktów z exponential backoff."""
+        """Ceny przez adresy kontraktów z exponential backoff (szybki fallback przy 429)."""
         if not token_addresses:
             return {}
         
         addresses = ",".join(addr.lower() for addr in token_addresses)
         url = f"{self.BASE_URL}?contract_addresses={addresses}&vs_currencies=usd"
         
-        delay = 0.5
-        for attempt in range(4):
+        delay = 0.1
+        max_attempts = 2
+        for attempt in range(max_attempts):
             try:
                 response = requests.get(url, timeout=5)
                 response.raise_for_status()
@@ -178,13 +184,15 @@ class CoinGeckoService(ISingleTokenPriceService):
                 
             except requests.exceptions.HTTPError as e:
                 if hasattr(e.response, 'status_code') and e.response.status_code == 429:
-                    if attempt < 3:
-                        jitter = random.uniform(0, 0.2)
+                    if attempt < max_attempts - 1:
+                        jitter = random.uniform(0, 0.1)
                         sleep_time = delay + jitter
                         print(f"CoinGecko 429 - czekam {sleep_time:.2f}s przed próbą {attempt + 2}")
                         time.sleep(sleep_time)
                         delay *= 2
                         continue
+                    print(f"CoinGecko 429 - przechodzę do fallback po {max_attempts} próbach")
+                    return {addr: None for addr in token_addresses}
                 print(f"Błąd CoinGecko batch: {e}")
                 return {addr: None for addr in token_addresses}
                 

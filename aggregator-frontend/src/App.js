@@ -20,7 +20,7 @@ function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedOfferIndex, setSelectedOfferIndex] = useState(0);
   const [autoRefresh, setAutoRefresh] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(60);
+  const [refreshInterval, setRefreshInterval] = useState(10);
   const [activeTab, setActiveTab] = useState('swap');
   const queryClient = new QueryClient()
 
@@ -28,6 +28,9 @@ function App() {
     setIsLoading(true);
     setTokens({ tokenFrom: data.token_from, tokenTo: data.token_to, amount: data.amount });
     setSelectedOfferIndex(0);
+
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 200;
 
     try {
       const response = await fetch(`${API_BASE}/exchange`, {
@@ -49,6 +52,9 @@ function App() {
       console.error("Błąd API", err);
       setResults([]);
     } finally {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_LOADING_TIME - elapsed);
+      await new Promise(resolve => setTimeout(resolve, remaining));
       setIsLoading(false);
     }
   };
@@ -57,6 +63,8 @@ function App() {
     if (!tokens.tokenFrom || !tokens.tokenTo) return;
     
     setIsRefreshing(true);
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 200;
     
     try {
       const response = await fetch(`${API_BASE}/exchange`, {
@@ -80,6 +88,9 @@ function App() {
     } catch (err) {
       console.error("Błąd odświeżania", err);
     } finally {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_LOADING_TIME - elapsed);
+      await new Promise(resolve => setTimeout(resolve, remaining));
       setIsRefreshing(false);
     }
   };
